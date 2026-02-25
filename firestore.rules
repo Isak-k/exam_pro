@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- Helper Functions ---
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      allow read: if isUser(userId) || isAdmin();
+      allow write: if isUser(userId) || isAdmin();
+    }
+
+    // --- Exams Collection ---
+    match /exams/{examId} {
+      function isExamCreator() {
+        return isAuthenticated() && resource.data.createdBy == request.auth.uid;
+      }
+
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || (isAuthenticated() && request.resource.data.createdBy == request.auth.uid);
+      allow update: if isAdmin() || isExamCreator();
+      allow delete: if isAdmin() || isExamCreator();
+
+      match /questions/{questionId} {
+        function isParentExamCreator() {
+          return isAuthenticated() && get(/databases/$(database)/documents/exams/$(examId)).data.createdBy == request.auth.uid;
+        }
+        allow read: if isAuthenticated();
+        allow write: if isAdmin() || isParentExamCreator();
+      }
+
+      match /blockedStudents/{studentId} {
+        function isParentExamCreator() {
+          return isAuthenticated() && get(/databases/$(database)/documents/exams/$(examId)).data.createdBy == request.auth.uid;
+        }
+        allow read: if isAuthenticated();
+        allow write: if isAdmin() || isParentExamCreator();
+      }
+    }
+
+    // --- Exam Attempts Collection ---
+    // UPDATED: Allow authenticated users to read all attempts (needed for leaderboard)
+    match /examAttempts/{attemptId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.studentId == request.auth.uid;
+      allow update: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isAdmin());
+
+      match /answers/{answerId} {
+        function isAttemptOwner() {
+          return get(/databases/$(database)/documents/examAttempts/$(attemptId)).data.studentId == request.auth.uid;
+        }
+        allow read: if isAuthenticated() && (isAttemptOwner() || isAdmin());
+        allow write: if isAuthenticated() && (isAttemptOwner() || isAdmin());
+      }
+    }
+
+    // --- Departments Collection ---
+    match /departments/{departmentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Leaderboard Collections (NEW) ---
+    match /leaderboardCache/{departmentId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /leaderboardRankings/{rankingId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}

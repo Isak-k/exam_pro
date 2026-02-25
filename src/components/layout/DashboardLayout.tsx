@@ -1,0 +1,235 @@
+import { ReactNode, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { signOut } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { LanguageToggle } from "@/components/ui/language-toggle";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  GraduationCap,
+  LayoutDashboard,
+  FileText,
+  Users,
+  BarChart3,
+  Settings,
+  LogOut,
+  ClipboardList,
+  Trophy,
+  Menu,
+  X,
+  Shield,
+  UserCog,
+  Building,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { profile, role } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
+  const adminLinks = [
+    { href: "/dashboard", label: t("dashboard.menu.dashboard"), icon: LayoutDashboard },
+    { href: "/dashboard/admin/exams", label: t("dashboard.menu.manageExams"), icon: FileText },
+    { href: "/dashboard/all-results", label: t("dashboard.menu.allResults"), icon: Trophy },
+    { href: "/dashboard/students", label: t("dashboard.menu.students"), icon: Users },
+    { href: "/dashboard/analytics", label: t("dashboard.menu.analytics"), icon: BarChart3 },
+    { href: "/dashboard/leaderboard-admin", label: "Leaderboard Admin", icon: Trophy },
+  ];
+
+  if (role === "admin") {
+    adminLinks.push({ href: "/dashboard/examiners", label: t("dashboard.menu.examiners"), icon: UserCog });
+    adminLinks.push({ href: "/dashboard/departments", label: t("dashboard.menu.departments"), icon: Building });
+  }
+
+  const studentLinks = [
+    { href: "/dashboard", label: t("dashboard.menu.dashboard"), icon: LayoutDashboard },
+    { href: "/dashboard/exams", label: t("dashboard.menu.availableExams"), icon: ClipboardList },
+    { href: "/dashboard/results", label: t("dashboard.menu.myResults"), icon: Trophy },
+  ];
+
+  const links = role === "admin" ? adminLinks : studentLinks;
+
+  const initials = profile?.full_name
+    ?.split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2) || "U";
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Mobile header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 border-b bg-card/95 backdrop-blur-sm flex items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+          <Link to="/dashboard" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <GraduationCap className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <span className="font-display font-semibold">{t("common.examPro")}</span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
+          <ThemeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <div className="px-2 py-1.5">
+                <p className="text-sm font-medium">{profile?.full_name}</p>
+                <p className="text-xs text-muted-foreground capitalize">{role ? t(`common.${role}`) : ""}</p>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                {t("common.signOut")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed top-0 left-0 z-40 h-full w-64 bg-sidebar/95 backdrop-blur-sm border-r border-sidebar-border/50 shadow-lg transform transition-transform duration-300 ease-out lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="h-20 flex items-center gap-3 px-6 border-b border-white/10 bg-gradient-to-r from-cyan-600 to-teal-600">
+            <div className="h-10 w-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-md">
+              <GraduationCap className="h-6 w-6 text-white" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-white text-xl tracking-tight">
+                {t("common.examPro")}
+              </span>
+              <span className="text-[10px] font-medium text-white/70 uppercase tracking-widest">
+                Student Portal
+              </span>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+            {links.map((link) => {
+              const isActive = location.pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setSidebarOpen(false)}
+                  className={cn(
+                    "group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium",
+                    isActive
+                      ? "bg-white/20 text-white font-semibold shadow-md backdrop-blur-sm"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  <link.icon className={cn(
+                    "h-5 w-5 transition-transform group-hover:scale-110", 
+                    isActive ? "text-white" : "text-white/70 group-hover:text-white"
+                  )} />
+                  <span className="text-sm">{link.label}</span>
+                  {isActive && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* User section */}
+          <div className="p-4 border-t border-white/10 bg-gradient-to-r from-cyan-600 to-teal-600">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all border border-transparent hover:border-white/20">
+                  <Avatar className="h-10 w-10 ring-2 ring-white/30 shadow-sm">
+                    <AvatarFallback className="bg-white/20 backdrop-blur-sm text-white text-sm font-semibold">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 text-left overflow-hidden">
+                    <p className="text-sm font-semibold text-white truncate">
+                      {profile?.full_name}
+                    </p>
+                    <p className="text-xs text-white/70 capitalize truncate">
+                      {role ? t(`common.${role}`) : ""}
+                    </p>
+                  </div>
+                  <Settings className="h-4 w-4 text-white/70" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
+                  <Users className="mr-2 h-4 w-4" />
+                  {t("common.profile")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/settings")}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  {t("common.settings")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  {t("common.signOut")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </aside>
+
+      {/* Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main content */}
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0">
+        <div className="p-6 lg:p-8">{children}</div>
+      </main>
+    </div>
+  );
+}

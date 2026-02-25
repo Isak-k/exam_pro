@@ -1,0 +1,48 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
+
+// Debug: Log config to verify environment variables are loaded
+console.log('Firebase Config:', {
+  apiKey: firebaseConfig.apiKey ? '✓ Loaded' : '✗ Missing',
+  authDomain: firebaseConfig.authDomain ? '✓ Loaded' : '✗ Missing',
+  projectId: firebaseConfig.projectId ? '✓ Loaded' : '✗ Missing',
+  storageBucket: firebaseConfig.storageBucket ? '✓ Loaded' : '✗ Missing',
+  messagingSenderId: firebaseConfig.messagingSenderId ? '✓ Loaded' : '✗ Missing',
+  appId: firebaseConfig.appId ? '✓ Loaded' : '✗ Missing'
+});
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+
+// Enable offline persistence for Firestore
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code === 'failed-precondition') {
+    // Multiple tabs open, persistence can only be enabled in one tab at a time
+    console.warn('Offline persistence failed: Multiple tabs open');
+  } else if (err.code === 'unimplemented') {
+    // The current browser doesn't support persistence
+    console.warn('Offline persistence not supported by this browser');
+  } else {
+    console.error('Error enabling offline persistence:', err);
+  }
+});
+
+console.log('✓ Firebase offline persistence enabled');
+
+export default app;
