@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "robots.txt", "placeholder.svg"],
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB limit
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}']
+      },
       manifest: {
         name: "ExamPro - Online Examination Platform",
         short_name: "ExamPro",
