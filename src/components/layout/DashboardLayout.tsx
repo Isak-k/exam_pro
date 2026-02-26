@@ -15,6 +15,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
   GraduationCap,
   LayoutDashboard,
   FileText,
@@ -29,6 +35,7 @@ import {
   Shield,
   UserCog,
   Building,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +48,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileSheetOpen, setProfileSheetOpen] = useState(false);
   const { t } = useTranslation();
 
   const handleSignOut = async () => {
@@ -261,29 +269,69 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             );
           })}
           
-          {/* Settings/Profile Button */}
-          <Link
-            to="/dashboard/profile"
+          {/* Profile Button - Opens Sheet */}
+          <button
+            onClick={() => setProfileSheetOpen(true)}
             className={cn(
               "flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl transition-all",
-              location.pathname === "/dashboard/profile"
+              profileSheetOpen
                 ? "bg-primary/10 text-primary"
                 : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
             )}
           >
-            <Users className={cn(
-              "h-6 w-6",
-              location.pathname === "/dashboard/profile" && "scale-110"
-            )} />
+            <User className="h-6 w-6" />
             <span className="text-[10px] font-medium truncate max-w-full">
               {t("common.profile")}
             </span>
-            {location.pathname === "/dashboard/profile" && (
-              <div className="w-1 h-1 rounded-full bg-primary mt-0.5" />
-            )}
-          </Link>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Profile Sheet */}
+      <Sheet open={profileSheetOpen} onOpenChange={setProfileSheetOpen}>
+        <SheetContent side="bottom" className="h-auto rounded-t-3xl">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Profile Menu</SheetTitle>
+          </SheetHeader>
+          
+          {/* User Info Section */}
+          <div className="bg-gradient-to-r from-cyan-500 to-teal-500 -mx-6 -mt-6 px-6 py-6 rounded-t-3xl mb-4">
+            <div className="flex items-center gap-4">
+              <Avatar className="h-16 w-16 ring-4 ring-white/30">
+                <AvatarFallback className="bg-white/20 backdrop-blur-sm text-white text-xl font-bold">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-white">{profile?.full_name}</h3>
+                <p className="text-sm text-white/80 capitalize">{role ? t(`common.${role}`) : ""}</p>
+              </div>
+              <button
+                onClick={() => setProfileSheetOpen(false)}
+                className="p-2 rounded-full hover:bg-white/20 transition-colors"
+              >
+                <Settings className="h-5 w-5 text-white" />
+              </button>
+            </div>
+          </div>
+
+          {/* Menu Items */}
+          <div className="space-y-2 pb-4">
+            <button
+              onClick={() => {
+                navigate("/settings");
+                setProfileSheetOpen(false);
+              }}
+              className="w-full flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <div className="h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <Settings className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              </div>
+              <span className="text-base font-medium">{t("common.settings")}</span>
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

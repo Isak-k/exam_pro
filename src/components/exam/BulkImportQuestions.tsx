@@ -148,9 +148,9 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
 
     try {
       // Using Google Gemini API - trying available models in order
-      // First try: gemini-2.5-flash (newest, shown in your API dashboard)
+      // First try: gemini-1.5-flash (recommended for most use cases)
       let response = await fetch(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
         {
           method: 'POST',
           headers: {
@@ -172,36 +172,10 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
         }
       );
 
-      // If gemini-2.5-flash doesn't work, try gemini-1.5-flash
+      // If gemini-1.5-flash doesn't work, try gemini-1.5-pro (more capable but slower)
       if (!response.ok) {
         response = await fetch(
-          `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{
-                  text: prompt
-                }]
-              }],
-              generationConfig: {
-                temperature: 0.7,
-                topK: 40,
-                topP: 0.95,
-                maxOutputTokens: 8192,
-              }
-            })
-          }
-        );
-      }
-
-      // If still not working, try gemini-pro
-      if (!response.ok) {
-        response = await fetch(
-          `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`,
           {
             method: 'POST',
             headers: {

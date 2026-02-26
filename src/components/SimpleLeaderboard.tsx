@@ -64,7 +64,7 @@ export function SimpleLeaderboard({ departmentId, refreshSignal }: SimpleLeaderb
   }
 
   const topThree = entries.slice(0, 3);
-  const restOfList = entries.slice(3, 10);
+  const restOfList = entries.slice(3); // Show ALL remaining students, not just top 10
 
   // Arrange podium: 2nd, 1st, 3rd
   const podiumOrder = [topThree[1], topThree[0], topThree[2]].filter(Boolean);

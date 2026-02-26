@@ -73,7 +73,7 @@ async function verifyAuthAndGetProfile(
   const userId = context.auth.uid;
 
   // Get user profile
-  const userDoc = await db.collection('userProfiles').doc(userId).get();
+  const userDoc = await db.collection('users').doc(userId).get();
 
   if (!userDoc.exists) {
     throw new functions.https.HttpsError(
@@ -208,7 +208,7 @@ async function calculateRankings(departmentId: string): Promise<{
 }> {
   // Step 1: Get all students in the department
   const studentsSnapshot = await db
-    .collection('userProfiles')
+    .collection('users')
     .where('departmentId', '==', departmentId)
     .where('role', '==', 'student')
     .get();
@@ -467,7 +467,7 @@ export const onExamAttemptUpdate = functions.firestore
       }
 
       const studentDoc = await db
-        .collection('userProfiles')
+        .collection('users')
         .doc(studentId)
         .get();
 
@@ -490,6 +490,76 @@ export const onExamAttemptUpdate = functions.firestore
     } catch (error) {
       console.error('Error in onExamAttemptUpdate trigger:', error);
       // Don't throw - trigger failures shouldn't break the exam submission
+    }
+  });
+
+/**
+ * Trigger function to invalidate cache when user profiles are deleted or updated
+ * Requirements: 6.6
+ * 
+ * This function:
+ * - Triggers when a user (student) is deleted or their department changes
+ * - Invalidates cache to ensure leaderboard reflects current users only
+ */
+export const onUserProfileUpdate = functions.firestore
+  .document('users/{userId}')
+  .onWrite(async (change, context) => {
+    try {
+      const before = change.before.exists ? change.before.data() : null;
+      const after = change.after.exists ? change.after.data() : null;
+
+      // Determine which departments need cache invalidation
+      const departmentsToInvalidate = new Set<string>();
+
+      // If user was deleted
+      if (before && !after) {
+        const userData = before as UserProfileData;
+        if (userData.role === 'student' && userData.departmentId) {
+          departmentsToInvalidate.add(userData.departmentId);
+          console.log('User deleted, invalidating cache for department:', userData.departmentId);
+        }
+      }
+      // If user was created
+      else if (!before && after) {
+        const userData = after as UserProfileData;
+        if (userData.role === 'student' && userData.departmentId) {
+          departmentsToInvalidate.add(userData.departmentId);
+          console.log('New user created, invalidating cache for department:', userData.departmentId);
+        }
+      }
+      // If user was updated (check for department change or role change)
+      else if (before && after) {
+        const beforeData = before as UserProfileData;
+        const afterData = after as UserProfileData;
+
+        // Check if department changed
+        if (beforeData.departmentId !== afterData.departmentId) {
+          if (beforeData.role === 'student' && beforeData.departmentId) {
+            departmentsToInvalidate.add(beforeData.departmentId);
+            console.log('User moved from department:', beforeData.departmentId);
+          }
+          if (afterData.role === 'student' && afterData.departmentId) {
+            departmentsToInvalidate.add(afterData.departmentId);
+            console.log('User moved to department:', afterData.departmentId);
+          }
+        }
+        // Check if role changed to/from student
+        else if (beforeData.role !== afterData.role) {
+          if ((beforeData.role === 'student' || afterData.role === 'student') && afterData.departmentId) {
+            departmentsToInvalidate.add(afterData.departmentId);
+            console.log('User role changed, invalidating cache for department:', afterData.departmentId);
+          }
+        }
+      }
+
+      // Invalidate cache for all affected departments
+      for (const departmentId of departmentsToInvalidate) {
+        await invalidateCache(departmentId);
+        console.log('Cache invalidated for department:', departmentId);
+      }
+    } catch (error) {
+      console.error('Error in onUserProfileUpdate trigger:', error);
+      // Don't throw - trigger failures shouldn't break user operations
     }
   });
 
@@ -586,7 +656,7 @@ export const calculateGlobalDepartmentLeaderboard = functions.https.onCall(
 
       // Step 2: Get all students grouped by department
       const studentsSnapshot = await db
-        .collection('userProfiles')
+        .collection('users')
         .where('role', '==', 'student')
         .get();
 
@@ -1021,7 +1091,7 @@ export const adminGetLeaderboardStatus = functions.https.onCall(
 
       // Get total student count
       const studentsSnapshot = await db
-        .collection('userProfiles')
+        .collection('users')
         .where('role', '==', 'student')
         .get();
       const totalStudents = studentsSnapshot.size;
@@ -1064,339 +1134,4 @@ export const adminGetLeaderboardStatus = functions.https.onCall(
     }
   }
 );
-
-
-/**
- * Admin function to manually refresh leaderboard cache
- * Requirements: 5.4, 6.2
- * 
- * This function allows admins to manually trigger cache refresh
- * for a specific department or all departments
- */
-export const adminRefreshLeaderboardCache = functions.https.onCall(
-  async (data: { departmentId?: string }, context) => {
-    try {
-      // Verify user authentication and get profile
-      const userProfile = await verifyAuthAndGetProfile(context);
-
-      // Only admins can refresh cache
-      if (userProfile.role !== 'admin' && userProfile.role !== 'superadmin') {
-        throw new functions.https.HttpsError(
-          'permission-denied',
-          'Only administrators can refresh leaderboard cache'
-        );
-      }
-
-      const { departmentId } = data;
-
-      if (departmentId) {
-        // Refresh cache for specific department
-        const { entries, totalStudents } = await calculateRankings(departmentId);
-        await writeToCache(departmentId, entries, totalStudents);
-
-        return {
-          success: true,
-          message: `Cache refreshed for department: ${departmentId}`,
-          departmentId,
-          totalStudents,
-          timestamp: admin.firestore.Timestamp.now()
-        };
-      } else {
-        // Refresh cache for all departments
-        const departmentsSnapshot = await db.collection('departments').get();
-        
-        if (departmentsSnapshot.empty) {
-          return {
-            success: true,
-            message: 'No departments found',
-            refreshedCount: 0,
-            timestamp: admin.firestore.Timestamp.now()
-          };
-        }
-
-        const refreshPromises = departmentsSnapshot.docs.map(async (doc) => {
-          const deptId = doc.id;
-          try {
-            const { entries, totalStudents } = await calculateRankings(deptId);
-            await writeToCache(deptId, entries, totalStudents);
-            return { departmentId: deptId, success: true, totalStudents };
-          } catch (error) {
-            console.error(`Error refreshing cache for department ${deptId}:`, error);
-            return { departmentId: deptId, success: false, error: String(error) };
-          }
-        });
-
-        const results = await Promise.all(refreshPromises);
-        const successCount = results.filter(r => r.success).length;
-
-        return {
-          success: true,
-          message: `Cache refreshed for ${successCount} of ${results.length} departments`,
-          refreshedCount: successCount,
-          totalDepartments: results.length,
-          results,
-          timestamp: admin.firestore.Timestamp.now()
-        };
-      }
-    } catch (error) {
-      console.error('Error refreshing leaderboard cache:', error);
-      
-      if (error instanceof functions.https.HttpsError) {
-        throw error;
-      }
-      
-      throw new functions.https.HttpsError(
-        'internal',
-        'Failed to refresh leaderboard cache',
-        { error: error instanceof Error ? error.message : String(error) }
-      );
-    }
-  }
-);
-
-/**
- * Admin function to recalculate all rankings
- * Requirements: 5.4, 6.2
- * 
- * This function forces a complete recalculation of all leaderboard rankings
- * and updates the cache for all departments
- */
-export const adminRecalculateRankings = functions.https.onCall(
-  async (data, context) => {
-    try {
-      // Verify user authentication and get profile
-      const userProfile = await verifyAuthAndGetProfile(context);
-
-      // Only admins can recalculate rankings
-      if (userProfile.role !== 'admin' && userProfile.role !== 'superadmin') {
-        throw new functions.https.HttpsError(
-          'permission-denied',
-          'Only administrators can recalculate rankings'
-        );
-      }
-
-      // Get all departments
-      const departmentsSnapshot = await db.collection('departments').get();
-      
-      if (departmentsSnapshot.empty) {
-        return {
-          success: true,
-          message: 'No departments found',
-          recalculatedCount: 0,
-          timestamp: admin.firestore.Timestamp.now()
-        };
-      }
-
-      // Recalculate rankings for all departments
-      const recalculatePromises = departmentsSnapshot.docs.map(async (doc) => {
-        const deptId = doc.id;
-        try {
-          // Invalidate existing cache first
-          await invalidateCache(deptId);
-          
-          // Calculate fresh rankings
-          const { entries, totalStudents } = await calculateRankings(deptId);
-          
-          // Write to cache
-          await writeToCache(deptId, entries, totalStudents);
-          
-          return { 
-            departmentId: deptId, 
-            success: true, 
-            totalStudents,
-            entriesCount: entries.length 
-          };
-        } catch (error) {
-          console.error(`Error recalculating rankings for department ${deptId}:`, error);
-          return { 
-            departmentId: deptId, 
-            success: false, 
-            error: String(error) 
-          };
-        }
-      });
-
-      const results = await Promise.all(recalculatePromises);
-      const successCount = results.filter(r => r.success).length;
-      const totalStudents = results
-        .filter(r => r.success)
-        .reduce((sum, r) => sum + (r.totalStudents || 0), 0);
-
-      return {
-        success: true,
-        message: `Rankings recalculated for ${successCount} of ${results.length} departments`,
-        recalculatedCount: successCount,
-        totalDepartments: results.length,
-        totalStudents,
-        results,
-        timestamp: admin.firestore.Timestamp.now()
-      };
-    } catch (error) {
-      console.error('Error recalculating rankings:', error);
-      
-      if (error instanceof functions.https.HttpsError) {
-        throw error;
-      }
-      
-      throw new functions.https.HttpsError(
-        'internal',
-        'Failed to recalculate rankings',
-        { error: error instanceof Error ? error.message : String(error) }
-      );
-    }
-  }
-);
-
-/**
- * Admin function to reset leaderboard for a department
- * Requirements: 5.4, 6.2
- * 
- * This function clears the leaderboard cache for a specific department
- * Used for maintenance or when data needs to be reset
- */
-export const adminResetLeaderboard = functions.https.onCall(
-  async (data: { departmentId: string }, context) => {
-    try {
-      // Verify user authentication and get profile
-      const userProfile = await verifyAuthAndGetProfile(context);
-
-      // Only admins can reset leaderboard
-      if (userProfile.role !== 'admin' && userProfile.role !== 'superadmin') {
-        throw new functions.https.HttpsError(
-          'permission-denied',
-          'Only administrators can reset leaderboard'
-        );
-      }
-
-      const { departmentId } = data;
-
-      if (!departmentId) {
-        throw new functions.https.HttpsError(
-          'invalid-argument',
-          'departmentId is required'
-        );
-      }
-
-      // Invalidate cache for the department
-      await invalidateCache(departmentId);
-
-      return {
-        success: true,
-        message: `Leaderboard cache cleared for department: ${departmentId}`,
-        departmentId,
-        timestamp: admin.firestore.Timestamp.now()
-      };
-    } catch (error) {
-      console.error('Error resetting leaderboard:', error);
-      
-      if (error instanceof functions.https.HttpsError) {
-        throw error;
-      }
-      
-      throw new functions.https.HttpsError(
-        'internal',
-        'Failed to reset leaderboard',
-        { error: error instanceof Error ? error.message : String(error) }
-      );
-    }
-  }
-);
-
-/**
- * Admin function to get leaderboard system status
- * Requirements: 5.4, 6.2
- * 
- * This function provides system-wide statistics about the leaderboard
- * including cache status, department counts, and student counts
- */
-export const adminGetLeaderboardStatus = functions.https.onCall(
-  async (data, context) => {
-    try {
-      // Verify user authentication and get profile
-      const userProfile = await verifyAuthAndGetProfile(context);
-
-      // Only admins can view system status
-      if (userProfile.role !== 'admin' && userProfile.role !== 'superadmin') {
-        throw new functions.https.HttpsError(
-          'permission-denied',
-          'Only administrators can view leaderboard status'
-        );
-      }
-
-      // Get all departments
-      const departmentsSnapshot = await db.collection('departments').get();
-      const totalDepartments = departmentsSnapshot.size;
-
-      // Get all cached leaderboards
-      const cacheSnapshot = await db.collection('leaderboardCache').get();
-      const now = admin.firestore.Timestamp.now();
-
-      let validCaches = 0;
-      let expiredCaches = 0;
-      let totalCachedStudents = 0;
-
-      const cacheDetails = cacheSnapshot.docs.map(doc => {
-        const data = doc.data() as LeaderboardCache;
-        const isExpired = data.expiresAt.toMillis() < now.toMillis();
-        
-        if (isExpired) {
-          expiredCaches++;
-        } else {
-          validCaches++;
-          totalCachedStudents += data.totalStudents || 0;
-        }
-
-        return {
-          departmentId: data.departmentId,
-          totalStudents: data.totalStudents,
-          lastUpdated: data.lastUpdated,
-          expiresAt: data.expiresAt,
-          isExpired
-        };
-      });
-
-      // Get total student count
-      const studentsSnapshot = await db
-        .collection('userProfiles')
-        .where('role', '==', 'student')
-        .get();
-      const totalStudents = studentsSnapshot.size;
-
-      // Get total exam attempts
-      const attemptsSnapshot = await db
-        .collection('examAttempts')
-        .where('isSubmitted', '==', true)
-        .get();
-      const totalExamAttempts = attemptsSnapshot.size;
-
-      return {
-        success: true,
-        status: {
-          totalDepartments,
-          totalStudents,
-          totalExamAttempts,
-          cache: {
-            total: cacheSnapshot.size,
-            valid: validCaches,
-            expired: expiredCaches,
-            totalCachedStudents
-          },
-          cacheDetails
-        },
-        timestamp: admin.firestore.Timestamp.now()
-      };
-    } catch (error) {
-      console.error('Error getting leaderboard status:', error);
-      
-      if (error instanceof functions.https.HttpsError) {
-        throw error;
-      }
-      
-      throw new functions.https.HttpsError(
-        'internal',
-        'Failed to get leaderboard status',
-        { error: error instanceof Error ? error.message : String(error) }
-      );
-    }
-  }
-);
+

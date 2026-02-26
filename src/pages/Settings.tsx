@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { updatePassword } from "firebase/auth";
+import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { auth } from "@/integrations/firebase/client";
 import { updateUserProfile } from "@/lib/auth";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { newPasswordSchema } from "@/lib/validations";
-import { Loader2, User, Mail, Lock, Save } from "lucide-react";
+import { Loader2, User, Mail, Lock, Save, Shield } from "lucide-react";
 
 const Settings = () => {
   const { profile, refreshProfile, user } = useAuth();
@@ -64,6 +64,12 @@ const Settings = () => {
     e.preventDefault();
     setPasswordErrors({});
 
+    // Validate old password is provided
+    if (!currentPassword) {
+      setPasswordErrors({ password: "Current password is required for security" });
+      return;
+    }
+
     const result = newPasswordSchema.safeParse({
       password: newPassword,
       confirmPassword,
@@ -79,10 +85,15 @@ const Settings = () => {
       return;
     }
 
-    if (!auth.currentUser) return;
+    if (!auth.currentUser || !user?.email) return;
 
     setLoading(true);
     try {
+      // Reauthenticate user with current password for security
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
+      await reauthenticateWithCredential(auth.currentUser, credential);
+
+      // Now update the password
       await updatePassword(auth.currentUser, newPassword);
 
       toast({
@@ -93,9 +104,20 @@ const Settings = () => {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error: any) {
+      let errorMessage = "Could not change password";
+      
+      if (error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
+        errorMessage = "Current password is incorrect";
+        setPasswordErrors({ password: errorMessage });
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "New password is too weak";
+      } else if (error.code === "auth/requires-recent-login") {
+        errorMessage = "Please sign out and sign in again before changing your password";
+      }
+
       toast({
         title: "Password change failed",
-        description: error.message || "Could not change password",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -198,6 +220,32 @@ const Settings = () => {
           <CardContent>
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor="current-password" className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-orange-500" />
+                  Current Password
+                </Label>
+                <Input
+                  id="current-password"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => {
+                    setCurrentPassword(e.target.value);
+                    setPasswordErrors((prev) => ({ ...prev, password: undefined }));
+                  }}
+                  placeholder="Enter your current password"
+                  className={passwordErrors.password ? "border-destructive" : ""}
+                />
+                {passwordErrors.password && (
+                  <p className="text-sm text-destructive">{passwordErrors.password}</p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Required for security verification
+                </p>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
                 <Label htmlFor="new-password">New Password</Label>
                 <Input
                   id="new-password"
@@ -205,14 +253,9 @@ const Settings = () => {
                   value={newPassword}
                   onChange={(e) => {
                     setNewPassword(e.target.value);
-                    setPasswordErrors((prev) => ({ ...prev, password: undefined }));
                   }}
                   placeholder="••••••••"
-                  className={passwordErrors.password ? "border-destructive" : ""}
                 />
-                {passwordErrors.password && (
-                  <p className="text-sm text-destructive">{passwordErrors.password}</p>
-                )}
               </div>
 
               <div className="space-y-2">
@@ -237,7 +280,7 @@ const Settings = () => {
                 Password must be at least 6 characters with uppercase, lowercase, and a number
               </p>
 
-              <Button type="submit" variant="outline" disabled={loading || !newPassword || !confirmPassword}>
+              <Button type="submit" variant="outline" disabled={loading || !currentPassword || !newPassword || !confirmPassword}>
                 {loading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (

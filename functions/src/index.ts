@@ -8,5 +8,6 @@ export {
   calculateDepartmentLeaderboard,
   calculateGlobalDepartmentLeaderboard,
   onExamAttemptUpdate,
+  onUserProfileUpdate,
   refreshStaleCaches
 } from './leaderboard';

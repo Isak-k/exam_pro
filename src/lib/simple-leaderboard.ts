@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, orderBy, limit, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Simple leaderboard entry type (different from the complex one in types.ts)
 export interface LeaderboardEntry {
@@ -31,7 +31,7 @@ export async function getSimpleLeaderboard(departmentId?: string): Promise<Leade
       if (cacheSnap.exists()) {
         const data = cacheSnap.data() as any;
         const entriesFromCache = Array.isArray(data.entries) ? data.entries : [];
-        const mapped: LeaderboardEntry[] = entriesFromCache.map((e: any, idx: number) => ({
+        const mapped: LeaderboardEntry[] = entriesFromCache.map((e: any) => ({
           studentId: e.studentId,
           displayName: e.studentName || e.displayName || e.email || 'Unknown',
           email: e.email || '',
@@ -39,30 +39,25 @@ export async function getSimpleLeaderboard(departmentId?: string): Promise<Leade
           bestScore: Math.round((Number(e.averageScore) || 0) * 100) / 100,
           averageScore: Math.round((Number(e.averageScore) || 0) * 100) / 100,
           totalAttempts: Number(e.examCount) || 0,
-          rankPosition: Number(e.rankPosition) || (idx + 1),
+          rankPosition: 0, // Will be recalculated
           lastExamDate: new Date(),
           improvementTrend: 0
-        }));
+        }))
+        .sort((a, b) => b.bestScore - a.bestScore) // Re-sort to ensure correct rankings
+        .map((entry, index) => ({ ...entry, rankPosition: index + 1 })); // Recalculate positions
+        
         if (mapped.length > 0) {
-          console.log('🏆 Using cached leaderboard entries:', mapped.length);
+          console.log('🏆 Using cached leaderboard entries (re-sorted):', mapped.length);
           return mapped;
         }
       } else {
         console.log('⚠️ No cached leaderboard found for department', departmentId);
+        console.log('📊 Will calculate fresh data from exam attempts...');
       }
     }
 
-    // Cache-only mode for students: if cache is missing, return empty list
-    // This avoids permission errors from reading other students' attempts
-    // Admin can populate cache via Admin Leaderboard actions
-    if (departmentId) {
-      return [];
-    }
-
-    const USE_ATTEMPTS_FALLBACK = false;
-    if (!USE_ATTEMPTS_FALLBACK) {
-      return [];
-    }
+    // Always calculate from attempts when cache is missing
+    console.log('🔄 Calculating leaderboard from exam attempts...');
 
     // Get all exam attempts (no filtering to avoid permission issues)
     const attemptsQuery = query(
@@ -203,6 +198,31 @@ export async function getSimpleLeaderboard(departmentId?: string): Promise<Leade
     console.log('🏆 Final leaderboard entries:', entries.length);
     if (entries.length > 0) {
       console.log('Top 3 entries:', entries.slice(0, 3));
+      
+      // Save to cache for faster future loads (if we have a department)
+      if (departmentId && entries.length > 0) {
+        try {
+          const cacheRef = doc(db, 'leaderboardCache', departmentId);
+          await setDoc(cacheRef, {
+            departmentId,
+            entries: entries.map(e => ({
+              studentId: e.studentId,
+              studentName: e.displayName,
+              email: e.email,
+              averageScore: e.averageScore,
+              examCount: e.totalAttempts,
+              rankPosition: e.rankPosition
+            })),
+            totalStudents: entries.length,
+            lastUpdated: new Date(),
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
+          });
+          console.log('💾 Saved calculated data to cache for future use');
+        } catch (cacheError) {
+          console.warn('⚠️ Could not save to cache (non-critical):', cacheError);
+          // Don't throw - cache save failure shouldn't break the leaderboard
+        }
+      }
     }
 
     return entries;
