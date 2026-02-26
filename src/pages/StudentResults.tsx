@@ -41,23 +41,44 @@ const StudentResults = () => {
     if (!user) return;
 
     try {
+      console.log('📊 Fetching student results...');
       const attempts = await getStudentAttempts(user.uid);
+      console.log(`✓ Found ${attempts.length} attempts`);
+      
       const submittedAttempts = attempts.filter(a => a.isSubmitted);
+      console.log(`✓ ${submittedAttempts.length} submitted attempts`);
 
       const resultsData = await Promise.all(submittedAttempts.map(async (attempt) => {
-        const exam = await getExam(attempt.examId);
-        return {
-          id: attempt.attemptId,
-          examId: attempt.examId,
-          totalScore: attempt.totalScore,
-          maxScore: attempt.maxScore,
-          submittedAt: attempt.submittedAt?.toDate().toISOString() || null,
-          timeSpentSeconds: attempt.timeSpentSeconds,
-          exam: {
-            title: exam?.title || 'Unknown Exam',
-            resultsPublished: exam?.resultsPublished || false
-          }
-        };
+        try {
+          const exam = await getExam(attempt.examId);
+          return {
+            id: attempt.attemptId,
+            examId: attempt.examId,
+            totalScore: attempt.totalScore,
+            maxScore: attempt.maxScore,
+            submittedAt: attempt.submittedAt?.toDate().toISOString() || null,
+            timeSpentSeconds: attempt.timeSpentSeconds,
+            exam: {
+              title: exam?.title || 'Unknown Exam',
+              resultsPublished: exam?.resultsPublished || false
+            }
+          };
+        } catch (examError) {
+          console.warn(`⚠ Could not fetch exam ${attempt.examId}:`, examError);
+          // Return result with cached attempt data even if exam fetch fails
+          return {
+            id: attempt.attemptId,
+            examId: attempt.examId,
+            totalScore: attempt.totalScore,
+            maxScore: attempt.maxScore,
+            submittedAt: attempt.submittedAt?.toDate().toISOString() || null,
+            timeSpentSeconds: attempt.timeSpentSeconds,
+            exam: {
+              title: attempt.examTitle || 'Unknown Exam',
+              resultsPublished: true // Show results if we have the attempt data
+            }
+          };
+        }
       }));
 
       // Sort by submittedAt desc
@@ -67,9 +88,11 @@ const StudentResults = () => {
         return dateB - dateA;
       });
 
+      console.log(`✓ Loaded ${resultsData.length} results`);
       setResults(resultsData);
     } catch (error) {
-      console.error("Error fetching results:", error);
+      console.error("❌ Error fetching results:", error);
+      // Don't clear results on error - keep showing cached data
     } finally {
       setLoading(false);
     }

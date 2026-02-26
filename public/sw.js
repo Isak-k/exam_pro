@@ -1,6 +1,8 @@
-// Service Worker for ExamPro - Offline Support
-const CACHE_NAME = 'exampro-v1';
-const RUNTIME_CACHE = 'exampro-runtime-v1';
+// Service Worker for ExamPro - Enhanced Offline Support
+const CACHE_VERSION = 'v2';
+const CACHE_NAME = `exampro-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `exampro-runtime-${CACHE_VERSION}`;
+const IMAGE_CACHE = `exampro-images-${CACHE_VERSION}`;
 
 // Assets to cache on install
 const PRECACHE_ASSETS = [
@@ -8,7 +10,8 @@ const PRECACHE_ASSETS = [
   '/index.html',
   '/offline.html',
   '/favicon.ico',
-  '/placeholder.svg'
+  '/placeholder.svg',
+  '/manifest.json'
 ];
 
 // Install event - cache essential assets
@@ -18,9 +21,16 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[SW] Precaching assets');
-        return cache.addAll(PRECACHE_ASSETS);
+        return cache.addAll(PRECACHE_ASSETS).catch((err) => {
+          console.error('[SW] Precache failed:', err);
+          // Continue even if some assets fail
+          return Promise.resolve();
+        });
       })
-      .then(() => self.skipWaiting())
+      .then(() => {
+        console.log('[SW] Service worker installed');
+        return self.skipWaiting();
+      })
   );
 });
 
@@ -31,75 +41,138 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME && name !== RUNTIME_CACHE)
+          .filter((name) => {
+            return name.startsWith('exampro-') && 
+                   name !== CACHE_NAME && 
+                   name !== RUNTIME_CACHE &&
+                   name !== IMAGE_CACHE;
+          })
           .map((name) => {
             console.log('[SW] Deleting old cache:', name);
             return caches.delete(name);
           })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      console.log('[SW] Service worker activated');
+      return self.clients.claim();
+    })
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - intelligent caching strategy
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip cross-origin requests
+  // Skip cross-origin requests except for known CDNs
   if (url.origin !== location.origin) {
+    // Allow caching of fonts and common CDN resources
+    if (url.hostname.includes('fonts.googleapis.com') || 
+        url.hostname.includes('fonts.gstatic.com')) {
+      event.respondWith(cacheFirstStrategy(request, RUNTIME_CACHE));
+    }
     return;
   }
 
-  // Skip Firebase API calls (let Firebase handle offline)
+  // Skip Firebase API calls - let Firebase handle offline persistence
   if (url.hostname.includes('firebaseio.com') || 
       url.hostname.includes('googleapis.com') ||
-      url.hostname.includes('firestore.googleapis.com')) {
+      url.hostname.includes('firestore.googleapis.com') ||
+      url.hostname.includes('identitytoolkit.googleapis.com') ||
+      url.pathname.includes('__/auth/')) {
     return;
   }
 
-  event.respondWith(
-    caches.match(request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          // Return cached version
-          return cachedResponse;
-        }
+  // Handle different types of requests
+  if (request.method !== 'GET') {
+    // Don't cache non-GET requests
+    return;
+  }
 
-        // Clone the request
-        const fetchRequest = request.clone();
+  // Images - cache first strategy
+  if (request.destination === 'image') {
+    event.respondWith(cacheFirstStrategy(request, IMAGE_CACHE));
+    return;
+  }
 
-        return fetch(fetchRequest)
-          .then((response) => {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
+  // HTML pages - network first, fallback to cache
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(networkFirstStrategy(request));
+    return;
+  }
 
-            // Clone the response
-            const responseToCache = response.clone();
+  // JS, CSS, fonts - cache first strategy
+  if (request.destination === 'script' || 
+      request.destination === 'style' || 
+      request.destination === 'font') {
+    event.respondWith(cacheFirstStrategy(request, RUNTIME_CACHE));
+    return;
+  }
 
-            // Cache the fetched response
-            caches.open(RUNTIME_CACHE)
-              .then((cache) => {
-                cache.put(request, responseToCache);
-              });
-
-            return response;
-          })
-          .catch(() => {
-            // If both cache and network fail, show offline page for navigation requests
-            if (request.mode === 'navigate') {
-              return caches.match('/offline.html');
-            }
-            return new Response('Offline', {
-              status: 503,
-              statusText: 'Service Unavailable'
-            });
-          });
-      })
-  );
+  // Default: network first with cache fallback
+  event.respondWith(networkFirstStrategy(request));
 });
+
+// Cache-first strategy: Check cache first, then network
+async function cacheFirstStrategy(request, cacheName) {
+  try {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    console.log('[SW] Cache-first failed:', error);
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    throw error;
+  }
+}
+
+// Network-first strategy: Try network first, fallback to cache
+async function networkFirstStrategy(request) {
+  try {
+    const networkResponse = await fetch(request);
+    
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(RUNTIME_CACHE);
+      cache.put(request, networkResponse.clone());
+    }
+    
+    return networkResponse;
+  } catch (error) {
+    console.log('[SW] Network failed, trying cache:', error);
+    
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    // If navigation request and no cache, show offline page
+    if (request.mode === 'navigate') {
+      const offlinePage = await caches.match('/offline.html');
+      if (offlinePage) {
+        return offlinePage;
+      }
+    }
+
+    return new Response('Offline - No cached version available', {
+      status: 503,
+      statusText: 'Service Unavailable',
+      headers: new Headers({
+        'Content-Type': 'text/plain'
+      })
+    });
+  }
+}
 
 // Background sync for queued operations
 self.addEventListener('sync', (event) => {
@@ -112,9 +185,31 @@ self.addEventListener('sync', (event) => {
 
 async function syncExamData() {
   console.log('[SW] Syncing exam data...');
-  // Firebase will handle the actual sync through its offline persistence
-  // This is just a placeholder for future custom sync logic
-  return Promise.resolve();
+  // Firebase handles the actual sync through its offline persistence
+  // This is a placeholder for future custom sync logic
+  try {
+    // Notify all clients that sync is happening
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SYNC_STARTED',
+        timestamp: Date.now()
+      });
+    });
+    
+    // Wait a bit for Firebase to sync
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Notify sync complete
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SYNC_COMPLETE',
+        timestamp: Date.now()
+      });
+    });
+  } catch (error) {
+    console.error('[SW] Sync failed:', error);
+  }
 }
 
 // Push notifications (future feature)
@@ -125,7 +220,9 @@ self.addEventListener('push', (event) => {
     body: data.body || 'You have a new notification',
     icon: '/favicon.ico',
     badge: '/favicon.ico',
-    data: data.url || '/'
+    data: data.url || '/',
+    vibrate: [200, 100, 200],
+    tag: data.tag || 'default'
   };
 
   event.waitUntil(
@@ -140,4 +237,20 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-console.log('[SW] Service Worker loaded');
+// Message handler for communication with clients
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+  
+  if (event.data && event.data.type === 'CACHE_URLS') {
+    event.waitUntil(
+      caches.open(RUNTIME_CACHE).then(cache => {
+        return cache.addAll(event.data.urls);
+      })
+    );
+  }
+});
+
+console.log('[SW] Service Worker loaded successfully');
+

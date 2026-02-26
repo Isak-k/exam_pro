@@ -10,7 +10,9 @@ import {
   where,
   orderBy,
   Timestamp,
-  serverTimestamp
+  serverTimestamp,
+  getDocFromCache,
+  getDocsFromCache
 } from 'firebase/firestore';
 import { db } from '@/integrations/firebase/client';
 import { ExamAttempt, Answer, Question } from '@/integrations/firebase/types';
@@ -43,13 +45,30 @@ export async function createAttempt(
 
 export async function getAttempt(attemptId: string): Promise<ExamAttempt | null> {
   const docRef = doc(db, 'examAttempts', attemptId);
-  const docSnap = await getDoc(docRef);
   
-  if (docSnap.exists()) {
-    return {
-      attemptId: docSnap.id,
-      ...docSnap.data()
-    } as ExamAttempt;
+  try {
+    // Try cache first for offline support
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return {
+        attemptId: docSnap.id,
+        ...docSnap.data()
+      } as ExamAttempt;
+    }
+  } catch (error) {
+    console.warn('Error fetching attempt, trying cache:', error);
+    try {
+      const cachedSnap = await getDocFromCache(docRef);
+      if (cachedSnap.exists()) {
+        return {
+          attemptId: cachedSnap.id,
+          ...cachedSnap.data()
+        } as ExamAttempt;
+      }
+    } catch (cacheError) {
+      console.error('Cache fetch failed:', cacheError);
+    }
   }
   
   return null;
@@ -66,18 +85,40 @@ export async function getStudentAttempts(studentId: string, examId?: string): Pr
     q = query(q, where('examId', '==', examId));
   }
   
-  const querySnapshot = await getDocs(q);
-  const attempts = querySnapshot.docs.map(doc => ({
-    attemptId: doc.id,
-    ...doc.data()
-  })) as ExamAttempt[];
+  try {
+    // Try regular fetch (uses cache automatically with offline persistence)
+    const querySnapshot = await getDocs(q);
+    const attempts = querySnapshot.docs.map(doc => ({
+      attemptId: doc.id,
+      ...doc.data()
+    })) as ExamAttempt[];
 
-  // Client-side sort
-  return attempts.sort((a, b) => {
-    const timeA = a.createdAt?.seconds || 0;
-    const timeB = b.createdAt?.seconds || 0;
-    return timeB - timeA;
-  });
+    // Client-side sort
+    return attempts.sort((a, b) => {
+      const timeA = a.createdAt?.seconds || 0;
+      const timeB = b.createdAt?.seconds || 0;
+      return timeB - timeA;
+    });
+  } catch (error) {
+    console.warn('Error fetching attempts, trying cache:', error);
+    try {
+      // Fallback to cache-only
+      const cachedSnapshot = await getDocsFromCache(q);
+      const attempts = cachedSnapshot.docs.map(doc => ({
+        attemptId: doc.id,
+        ...doc.data()
+      })) as ExamAttempt[];
+
+      return attempts.sort((a, b) => {
+        const timeA = a.createdAt?.seconds || 0;
+        const timeB = b.createdAt?.seconds || 0;
+        return timeB - timeA;
+      });
+    } catch (cacheError) {
+      console.error('Cache fetch failed:', cacheError);
+      return [];
+    }
+  }
 }
 
 export async function getExamAttempts(examId: string): Promise<ExamAttempt[]> {

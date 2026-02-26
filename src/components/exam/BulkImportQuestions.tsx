@@ -351,175 +351,188 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
           {t("admin.exams.bulkImport.trigger")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[1000px] lg:max-w-[1200px] max-h-[90vh] flex flex-col overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{t("admin.exams.bulkImport.title")}</DialogTitle>
-          <DialogDescription>
-            Import questions by typing/pasting text or generate them from PDF using AI.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="sm:max-w-[90vw] lg:max-w-[1200px] max-h-[90vh] p-0 flex flex-col">
+        <div className="p-4 sm:p-6 border-b">
+          <DialogHeader>
+            <DialogTitle className="text-lg sm:text-xl">
+              {t("admin.exams.bulkImport.title")}
+            </DialogTitle>
+            <DialogDescription className="text-sm">
+              Import questions by typing/pasting text or generate them from PDF using AI.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
-        <Tabs defaultValue="manual" className="flex-1 flex flex-col">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="manual" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Manual Input
-            </TabsTrigger>
-            <TabsTrigger value="ai" className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4" />
-              AI Generation
-            </TabsTrigger>
-          </TabsList>
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6">
+          <Tabs defaultValue="manual" className="flex flex-col h-full py-4">
+            <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsTrigger value="manual" className="flex items-center gap-2 text-xs sm:text-sm">
+                <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Manual Input</span>
+                <span className="sm:hidden">Manual</span>
+              </TabsTrigger>
+              <TabsTrigger value="ai" className="flex items-center gap-2 text-xs sm:text-sm">
+                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">AI Generation</span>
+                <span className="sm:hidden">AI</span>
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="manual" className="flex-1 flex flex-col space-y-4">
-            <div className="flex-1 overflow-hidden flex flex-col gap-4">
-              {!parseResult ? (
-                <Textarea
-                  placeholder={t("admin.exams.bulkImport.placeholder")}
-                  className="flex-1 min-h-[300px] font-mono text-sm resize-none"
-                  value={text}
-                  onChange={(e) => {
-                    setText(e.target.value);
-                  }}
-                />
-              ) : (
-                 <ScrollArea className="flex-1 border rounded-md p-4 bg-muted/20">
-                   <div className="space-y-6">
-                     {parseResult.preview?.map((q, i) => (
-                       <div key={i} className="bg-card border rounded-lg p-4 shadow-sm">
-                         <div className="font-semibold mb-2 flex gap-2">
-                           <span className="text-muted-foreground">{i + 1}.</span>
-                           <span>{q.questionText}</span>
-                         </div>
-                         <div className="grid gap-2 pl-6">
-                           {q.options.map((opt: string, optIndex: number) => (
-                             <div 
-                               key={optIndex} 
-                               className={`text-sm p-2 rounded border flex items-center gap-2 ${
-                                 optIndex === q.correctOptionIndex 
-                                   ? "bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300 font-medium" 
-                                   : "border-transparent bg-muted/50"
-                               }`}
-                             >
-                               <span className="w-6 h-6 flex items-center justify-center rounded-full border text-xs bg-background">
-                                 {String.fromCharCode(65 + optIndex)}
-                               </span>
-                               {opt}
-                               {optIndex === q.correctOptionIndex && (
-                                 <CheckCircle2 className="h-4 w-4 ml-auto" />
-                               )}
-                             </div>
-                           ))}
-                         </div>
-                         {q.explanation && (
-                           <div className="mt-2 text-sm text-muted-foreground italic pl-6 border-l-2 border-muted">
-                             <span className="font-semibold not-italic mr-1">{t("admin.exams.bulkImport.explanation")}</span>
-                             {q.explanation}
+            <TabsContent value="manual" className="flex-1 flex flex-col space-y-4 mt-0">
+              <div className="flex-1 overflow-hidden flex flex-col gap-4">
+                {!parseResult ? (
+                  <Textarea
+                    placeholder={t("admin.exams.bulkImport.placeholder")}
+                    className="flex-1 min-h-[250px] sm:min-h-[300px] font-mono text-xs sm:text-sm resize-none"
+                    value={text}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                    }}
+                  />
+                ) : (
+                   <ScrollArea className="flex-1 border rounded-md p-3 sm:p-4 bg-muted/20">
+                     <div className="space-y-4 sm:space-y-6">
+                       {parseResult.preview?.map((q, i) => (
+                         <div key={i} className="bg-card border rounded-lg p-3 sm:p-4 shadow-sm">
+                           <div className="font-semibold mb-2 flex gap-2 text-sm sm:text-base">
+                             <span className="text-muted-foreground">{i + 1}.</span>
+                             <span>{q.questionText}</span>
                            </div>
-                         )}
-                       </div>
-                     ))}
-                   </div>
-                 </ScrollArea>
-              )}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="ai" className="flex-1 flex flex-col space-y-4 overflow-hidden">
-            <ScrollArea className="flex-1 pr-4">
-              <div className="space-y-4">
-                <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
-                  <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                  <AlertTitle className="text-blue-800 dark:text-blue-300">AI MCQ Generation (University Level)</AlertTitle>
-                  <AlertDescription className="text-blue-700 dark:text-blue-400">
-                    Upload a PDF file to automatically generate university-level multiple-choice questions. The AI will create rigorous academic questions testing deep understanding.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="question-count">Number of Questions</Label>
-                      <Input
-                        id="question-count"
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={questionCount}
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value);
-                          if (!isNaN(val) && val > 0) setQuestionCount(val);
-                          else if (e.target.value === "") setQuestionCount(0);
-                        }}
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Enter the number of questions to generate (1-100)
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="pdf-file">PDF File</Label>
-                      <Input
-                        id="pdf-file"
-                        type="file"
-                        accept=".pdf"
-                        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                        className="cursor-pointer"
-                      />
-                      {selectedFile && (
-                        <p className="text-sm text-muted-foreground">
-                          {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <Button 
-                    onClick={handleFileUpload} 
-                    disabled={!selectedFile || !apiKey || isGenerating}
-                    className="w-full"
-                  >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Generating {questionCount} MCQs...
-                      </>
-                    ) : (
-                      <>
-                        <FileUp className="h-4 w-4 mr-2" />
-                        Generate {questionCount} MCQs from PDF
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                {text && (
-                  <div className="border-t pt-4 mt-4">
-                    <Label className="text-sm font-medium">Generated Questions Preview</Label>
-                    <Textarea
-                      value={text}
-                      onChange={(e) => setText(e.target.value)}
-                      className="mt-2 min-h-[200px] font-mono text-sm"
-                      placeholder="Generated questions will appear here..."
-                    />
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Review and edit the generated questions above, then click "Analyze" below to parse them.
-                    </p>
-                  </div>
+                           <div className="grid gap-2 pl-4 sm:pl-6">
+                             {q.options.map((opt: string, optIndex: number) => (
+                               <div 
+                                 key={optIndex} 
+                                 className={`text-xs sm:text-sm p-2 rounded border flex items-center gap-2 ${
+                                   optIndex === q.correctOptionIndex 
+                                     ? "bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300 font-medium" 
+                                     : "border-transparent bg-muted/50"
+                                 }`}
+                               >
+                                 <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full border text-xs bg-background flex-shrink-0">
+                                   {String.fromCharCode(65 + optIndex)}
+                                 </span>
+                                 <span className="flex-1">{opt}</span>
+                                 {optIndex === q.correctOptionIndex && (
+                                   <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                 )}
+                               </div>
+                             ))}
+                           </div>
+                           {q.explanation && (
+                             <div className="mt-2 text-xs sm:text-sm text-muted-foreground italic pl-4 sm:pl-6 border-l-2 border-muted">
+                               <span className="font-semibold not-italic mr-1">{t("admin.exams.bulkImport.explanation")}</span>
+                               {q.explanation}
+                             </div>
+                           )}
+                         </div>
+                       ))}
+                     </div>
+                   </ScrollArea>
                 )}
               </div>
-            </ScrollArea>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+
+            <TabsContent value="ai" className="flex-1 flex flex-col space-y-4 overflow-hidden mt-0">
+              <ScrollArea className="flex-1 pr-2 sm:pr-4">
+                <div className="space-y-4">
+                  <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
+                    <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <AlertTitle className="text-blue-800 dark:text-blue-300 text-sm sm:text-base">
+                      AI MCQ Generation
+                    </AlertTitle>
+                    <AlertDescription className="text-blue-700 dark:text-blue-400 text-xs sm:text-sm">
+                      Upload a PDF file to automatically generate university-level multiple-choice questions.
+                    </AlertDescription>
+                  </Alert>
+
+                  <div className="grid gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="question-count" className="text-sm">Number of Questions</Label>
+                        <Input
+                          id="question-count"
+                          type="number"
+                          min="1"
+                          max="100"
+                          value={questionCount}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            if (!isNaN(val) && val > 0) setQuestionCount(val);
+                            else if (e.target.value === "") setQuestionCount(0);
+                          }}
+                          className="text-sm"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Enter 1-100 questions
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="pdf-file" className="text-sm">PDF File</Label>
+                        <Input
+                          id="pdf-file"
+                          type="file"
+                          accept=".pdf"
+                          onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                          className="cursor-pointer text-sm"
+                        />
+                        {selectedFile && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button 
+                      onClick={handleFileUpload} 
+                      disabled={!selectedFile || !apiKey || isGenerating}
+                      className="w-full text-sm"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <FileUp className="h-4 w-4 mr-2" />
+                          Generate {questionCount} MCQs
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  {text && (
+                    <div className="border-t pt-4 mt-4">
+                      <Label className="text-sm font-medium">Generated Questions Preview</Label>
+                      <Textarea
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        className="mt-2 min-h-[150px] sm:min-h-[200px] font-mono text-xs sm:text-sm"
+                        placeholder="Generated questions will appear here..."
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Review and edit, then click "Analyze Text" below.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
+        </div>
 
         {parseResult && (
-          <div className="shrink-0">
+          <div className="px-4 sm:px-6 py-3 border-t">
             {parseResult.errors.length > 0 ? (
-              <Alert variant="destructive">
+              <Alert variant="destructive" className="text-sm">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>{t("admin.exams.bulkImport.parsingErrors")}</AlertTitle>
-                <AlertDescription>
-                  <ul className="list-disc pl-4 mt-2 space-y-1 max-h-[100px] overflow-y-auto">
+                <AlertTitle className="text-sm">
+                  {t("admin.exams.bulkImport.parsingErrors")}
+                </AlertTitle>
+                <AlertDescription className="text-xs">
+                  <ul className="list-disc pl-4 mt-2 space-y-1 max-h-[80px] overflow-y-auto">
                     {parseResult.errors.map((err, i) => (
                       <li key={i}>{err}</li>
                     ))}
@@ -527,10 +540,12 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
                 </AlertDescription>
               </Alert>
             ) : (
-              <Alert className="bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-900">
+              <Alert className="bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-900 text-sm">
                 <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
-                <AlertTitle className="text-green-800 dark:text-green-300">{t("admin.exams.bulkImport.readyToImport")}</AlertTitle>
-                <AlertDescription className="text-green-700 dark:text-green-400">
+                <AlertTitle className="text-green-800 dark:text-green-300 text-sm">
+                  {t("admin.exams.bulkImport.readyToImport")}
+                </AlertTitle>
+                <AlertDescription className="text-green-700 dark:text-green-400 text-xs">
                   {t("admin.exams.bulkImport.foundQuestions", { count: parseResult.count })}
                 </AlertDescription>
               </Alert>
@@ -538,26 +553,40 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
           </div>
         )}
 
-        <DialogFooter className="gap-2 sm:gap-0 mt-4">
-          <Button variant="outline" onClick={() => {
-            if (parseResult) {
-              setParseResult(null); // Go back to editing
-            } else {
-              setOpen(false);
-            }
-          }}>
-            {parseResult ? t("admin.exams.bulkImport.editText") : t("admin.exams.bulkImport.cancel")}
-          </Button>
-          {!parseResult ? (
-             <Button onClick={handleAnalyze} disabled={!text.trim() || isAnalyzing}>
-               {isAnalyzing ? t("admin.exams.bulkImport.analyzing") : t("admin.exams.bulkImport.analyze")}
-             </Button>
-          ) : (
-             <Button onClick={handleImport} disabled={isImporting || parseResult.count === 0 || parseResult.errors.length > 0}>
-               {isImporting ? t("admin.exams.bulkImport.importing") : t("admin.exams.bulkImport.import")}
-             </Button>
-          )}
-        </DialogFooter>
+        <div className="p-4 sm:p-6 border-t bg-muted/30">
+          <DialogFooter className="gap-2 sm:gap-0 flex-col sm:flex-row">
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                if (parseResult) {
+                  setParseResult(null);
+                } else {
+                  setOpen(false);
+                }
+              }}
+              className="w-full sm:w-auto text-sm"
+            >
+              {parseResult ? t("admin.exams.bulkImport.editText") : t("admin.exams.bulkImport.cancel")}
+            </Button>
+            {!parseResult ? (
+               <Button 
+                 onClick={handleAnalyze} 
+                 disabled={!text.trim() || isAnalyzing}
+                 className="w-full sm:w-auto text-sm"
+               >
+                 {isAnalyzing ? t("admin.exams.bulkImport.analyzing") : t("admin.exams.bulkImport.analyze")}
+               </Button>
+            ) : (
+               <Button 
+                 onClick={handleImport} 
+                 disabled={isImporting || parseResult.count === 0 || parseResult.errors.length > 0}
+                 className="w-full sm:w-auto text-sm"
+               >
+                 {isImporting ? t("admin.exams.bulkImport.importing") : t("admin.exams.bulkImport.import")}
+               </Button>
+            )}
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

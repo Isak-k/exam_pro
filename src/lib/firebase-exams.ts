@@ -11,7 +11,9 @@ import {
   orderBy,
   Timestamp,
   writeBatch,
-  deleteField
+  deleteField,
+  getDocFromCache,
+  getDocsFromCache
 } from 'firebase/firestore';
 import { db } from '@/integrations/firebase/client';
 import { Exam, Question } from '@/integrations/firebase/types';
@@ -36,14 +38,33 @@ export async function createExam(examData: Omit<Exam, 'examId' | 'createdAt' | '
 
 export async function getExam(examId: string): Promise<Exam | null> {
   const docRef = doc(db, 'exams', examId);
-  const docSnap = await getDoc(docRef);
   
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    return {
-      examId: data.examId || docSnap.id, // Use examId from data, fallback to doc.id
-      ...data
-    } as Exam;
+  try {
+    // Try regular fetch (uses cache automatically with offline persistence)
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return {
+        examId: data.examId || docSnap.id,
+        ...data
+      } as Exam;
+    }
+  } catch (error) {
+    console.warn(`Error fetching exam ${examId}, trying cache:`, error);
+    try {
+      // Fallback to cache-only
+      const cachedSnap = await getDocFromCache(docRef);
+      if (cachedSnap.exists()) {
+        const data = cachedSnap.data();
+        return {
+          examId: data.examId || cachedSnap.id,
+          ...data
+        } as Exam;
+      }
+    } catch (cacheError) {
+      console.error('Cache fetch failed:', cacheError);
+    }
   }
   
   return null;
@@ -116,42 +137,73 @@ export async function getPublishedExams(studentDepartmentId?: string): Promise<E
     where('isPublished', '==', true)
   );
   
-  const querySnapshot = await getDocs(q);
-  let exams = querySnapshot.docs.map(doc => {
-    const data = doc.data();
-    return {
-      examId: data.examId || doc.id, // Use examId from data, fallback to doc.id
-      ...data
-    } as Exam;
-  });
+  try {
+    // Try regular fetch (uses cache automatically)
+    const querySnapshot = await getDocs(q);
+    let exams = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        examId: data.examId || doc.id,
+        ...data
+      } as Exam;
+    });
 
-  // Filter by department - support both legacy single department and new multiple departments
-  exams = exams.filter(exam => {
-    // If exam has no department restrictions, show it to everyone
-    if (!exam.departmentId && (!exam.departmentIds || exam.departmentIds.length === 0)) {
-      return true;
-    }
-    
-    // Check legacy single department field
-    if (exam.departmentId && studentDepartmentId && exam.departmentId === studentDepartmentId) {
-      return true;
-    }
-    
-    // Check new multiple departments field
-    if (exam.departmentIds && exam.departmentIds.length > 0 && studentDepartmentId) {
-      return exam.departmentIds.includes(studentDepartmentId);
-    }
-    
-    // Otherwise, hide the exam
-    return false;
-  });
+    // Filter by department
+    exams = exams.filter(exam => {
+      if (!exam.departmentId && (!exam.departmentIds || exam.departmentIds.length === 0)) {
+        return true;
+      }
+      if (exam.departmentId && studentDepartmentId && exam.departmentId === studentDepartmentId) {
+        return true;
+      }
+      if (exam.departmentIds && exam.departmentIds.length > 0 && studentDepartmentId) {
+        return exam.departmentIds.includes(studentDepartmentId);
+      }
+      return false;
+    });
 
-  // Client-side sort
-  return exams.sort((a, b) => {
-    const timeA = a.createdAt?.seconds || 0;
-    const timeB = b.createdAt?.seconds || 0;
-    return timeB - timeA;
-  });
+    // Client-side sort
+    return exams.sort((a, b) => {
+      const timeA = a.createdAt?.seconds || 0;
+      const timeB = b.createdAt?.seconds || 0;
+      return timeB - timeA;
+    });
+  } catch (error) {
+    console.warn('Error fetching published exams, trying cache:', error);
+    try {
+      // Fallback to cache-only
+      const cachedSnapshot = await getDocsFromCache(q);
+      let exams = cachedSnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          examId: data.examId || doc.id,
+          ...data
+        } as Exam;
+      });
+
+      exams = exams.filter(exam => {
+        if (!exam.departmentId && (!exam.departmentIds || exam.departmentIds.length === 0)) {
+          return true;
+        }
+        if (exam.departmentId && studentDepartmentId && exam.departmentId === studentDepartmentId) {
+          return true;
+        }
+        if (exam.departmentIds && exam.departmentIds.length > 0 && studentDepartmentId) {
+          return exam.departmentIds.includes(studentDepartmentId);
+        }
+        return false;
+      });
+
+      return exams.sort((a, b) => {
+        const timeA = a.createdAt?.seconds || 0;
+        const timeB = b.createdAt?.seconds || 0;
+        return timeB - timeA;
+      });
+    } catch (cacheError) {
+      console.error('Cache fetch failed:', cacheError);
+      return [];
+    }
+  }
 }
 
 // Question management

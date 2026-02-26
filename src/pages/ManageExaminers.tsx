@@ -194,15 +194,15 @@ export default function ManageExaminers() {
     <DashboardLayout>
       <div className="space-y-6 animate-fade-in p-4 max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-3xl p-6 text-white shadow-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold font-display mb-2">Manage Examiners</h1>
-              <p className="text-cyan-50 opacity-90">
+        <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-3xl p-4 sm:p-6 text-white shadow-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold font-display mb-2">Manage Examiners</h1>
+              <p className="text-cyan-50 opacity-90 text-sm sm:text-base">
                 Create and manage examiner accounts
               </p>
               {isSuperAdminUser && (
-                <Badge variant="outline" className="mt-3 bg-yellow-400/20 text-yellow-100 border-yellow-300/30 backdrop-blur-sm">
+                <Badge variant="outline" className="mt-3 bg-yellow-400/20 text-yellow-100 border-yellow-300/30 backdrop-blur-sm text-xs">
                   <ShieldAlert className="h-3 w-3 mr-1" />
                   Super Admin Access
                 </Badge>
@@ -210,7 +210,7 @@ export default function ManageExaminers() {
             </div>
             <Button 
               onClick={() => setCreateOpen(true)}
-              className="bg-white text-cyan-600 hover:bg-cyan-50 shadow-md"
+              className="bg-white text-cyan-600 hover:bg-cyan-50 shadow-md w-full sm:w-auto"
               size="lg"
             >
               <Plus className="h-5 w-5 mr-2" />
@@ -475,33 +475,33 @@ export default function ManageExaminers() {
                   return (
                     <div 
                       key={examiner.userId}
-                      className="p-6 hover:bg-cyan-50/50 dark:hover:bg-cyan-950/20 transition-colors"
+                      className="p-4 sm:p-6 hover:bg-cyan-50/50 dark:hover:bg-cyan-950/20 transition-colors"
                     >
-                      <div className="flex items-center justify-between gap-4">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         {/* Left: User Info */}
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className="h-14 w-14 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
+                          <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md flex-shrink-0">
                             {examiner.fullName.charAt(0).toUpperCase()}
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-lg">{examiner.fullName}</h3>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h3 className="font-semibold text-base sm:text-lg truncate">{examiner.fullName}</h3>
                               {examiner.email === user?.email && (
                                 <Badge variant="outline" className="text-xs bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400 border-cyan-300">
                                   You
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{examiner.email}</p>
-                            <div className="flex items-center gap-2 mt-2">
+                            <p className="text-sm text-muted-foreground truncate">{examiner.email}</p>
+                            <div className="flex items-center gap-2 mt-2 flex-wrap">
                               {/* Status Badge */}
                               {examiner.disabled ? (
-                                <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-0">
+                                <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-0 text-xs">
                                   <Ban className="h-3 w-3 mr-1" />
                                   Disabled
                                 </Badge>
                               ) : (
-                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0">
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0 text-xs">
                                   <CheckCircle className="h-3 w-3 mr-1" />
                                   Active
                                 </Badge>
@@ -509,26 +509,22 @@ export default function ManageExaminers() {
                               
                               {/* Role Badge */}
                               {isSuper ? (
-                                <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-0">
+                                <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-0 text-xs">
                                   <ShieldAlert className="h-3 w-3 mr-1" />
-                                  Super Admin
+                                  Examiner
                                 </Badge>
                               ) : (
-                                <Badge variant="outline" className="border-cyan-300 text-cyan-700 dark:border-cyan-700 dark:text-cyan-400">
+                                <Badge variant="outline" className="border-cyan-300 text-cyan-700 dark:border-cyan-700 dark:text-cyan-400 text-xs">
                                   <ShieldCheck className="h-3 w-3 mr-1" />
                                   Examiner
                                 </Badge>
                               )}
-                              
-                              <span className="text-xs text-muted-foreground">
-                                Joined {examiner.createdAt?.toDate().toLocaleDateString()}
-                              </span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right: Actions */}
-                        <div className="flex items-center gap-3">
+                        {/* Right: Actions - Full width on mobile */}
+                        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end sm:justify-start">
                           {/* Enable/Disable Toggle */}
                           <div className="flex flex-col items-center gap-1">
                             <Switch
@@ -537,7 +533,7 @@ export default function ManageExaminers() {
                               disabled={!canModify}
                               className="data-[state=checked]:bg-green-500"
                             />
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-muted-foreground whitespace-nowrap">
                               {examiner.disabled ? 'Enable' : 'Disable'}
                             </span>
                           </div>
@@ -548,7 +544,7 @@ export default function ManageExaminers() {
                             size="sm"
                             onClick={() => handleEditClick(examiner)}
                             disabled={!canModify}
-                            className="h-10 w-10 p-0 rounded-full border-cyan-300 hover:bg-cyan-50 hover:border-cyan-400"
+                            className="h-10 w-10 p-0 rounded-full border-cyan-300 hover:bg-cyan-50 hover:border-cyan-400 flex-shrink-0"
                             title={!canModify ? "Cannot modify this examiner" : "Edit examiner"}
                           >
                             <Pencil className="h-4 w-4 text-cyan-600" />
@@ -560,7 +556,7 @@ export default function ManageExaminers() {
                             size="sm"
                             onClick={() => handleDeleteClick(examiner)}
                             disabled={!canModify}
-                            className="h-10 w-10 p-0 rounded-full border-red-300 hover:bg-red-50 hover:border-red-400"
+                            className="h-10 w-10 p-0 rounded-full border-red-300 hover:bg-red-50 hover:border-red-400 flex-shrink-0"
                             title={!canModify ? "Cannot delete this examiner" : "Delete examiner"}
                           >
                             <Trash2 className="h-4 w-4 text-red-600" />

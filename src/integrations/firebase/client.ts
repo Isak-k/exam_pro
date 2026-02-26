@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
+import { getFirestore, enableIndexedDbPersistence, enableMultiTabIndexedDbPersistence } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 export const firebaseConfig = {
@@ -30,19 +30,41 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-// Enable offline persistence for Firestore
-enableIndexedDbPersistence(db).catch((err) => {
-  if (err.code === 'failed-precondition') {
-    // Multiple tabs open, persistence can only be enabled in one tab at a time
-    console.warn('Offline persistence failed: Multiple tabs open');
-  } else if (err.code === 'unimplemented') {
-    // The current browser doesn't support persistence
-    console.warn('Offline persistence not supported by this browser');
-  } else {
-    console.error('Error enabling offline persistence:', err);
-  }
+// Enable offline persistence for Firestore with multi-tab support
+// Try multi-tab first, fallback to single-tab if needed
+enableMultiTabIndexedDbPersistence(db)
+  .then(() => {
+    console.log('✓ Firebase offline persistence enabled (multi-tab)');
+  })
+  .catch((err) => {
+    if (err.code === 'unimplemented') {
+      // Multi-tab not supported, try single-tab
+      console.log('Multi-tab persistence not supported, trying single-tab...');
+      return enableIndexedDbPersistence(db)
+        .then(() => {
+          console.log('✓ Firebase offline persistence enabled (single-tab)');
+        })
+        .catch((singleTabErr) => {
+          if (singleTabErr.code === 'failed-precondition') {
+            console.warn('⚠ Offline persistence failed: Multiple tabs open. Close other tabs and refresh.');
+          } else if (singleTabErr.code === 'unimplemented') {
+            console.warn('⚠ Offline persistence not supported by this browser');
+          } else {
+            console.error('✗ Error enabling offline persistence:', singleTabErr);
+          }
+        });
+    } else {
+      console.error('✗ Error enabling multi-tab persistence:', err);
+    }
+  });
+
+// Monitor online/offline status for Firebase
+window.addEventListener('online', () => {
+  console.log('✓ Network online - Firebase will sync pending changes');
 });
 
-console.log('✓ Firebase offline persistence enabled');
+window.addEventListener('offline', () => {
+  console.log('⚠ Network offline - Firebase using cached data');
+});
 
 export default app;
