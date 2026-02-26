@@ -227,9 +227,63 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       )}
 
       {/* Main content */}
-      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0">
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0 pb-20 lg:pb-0">
         <div className="p-6 lg:p-8">{children}</div>
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg">
+        <div className="grid grid-cols-4 gap-1 px-2 py-2">
+          {links.slice(0, 3).map((link) => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl transition-all",
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+              >
+                <link.icon className={cn(
+                  "h-6 w-6",
+                  isActive && "scale-110"
+                )} />
+                <span className="text-[10px] font-medium truncate max-w-full">
+                  {link.label}
+                </span>
+                {isActive && (
+                  <div className="w-1 h-1 rounded-full bg-primary mt-0.5" />
+                )}
+              </Link>
+            );
+          })}
+          
+          {/* Settings/Profile Button */}
+          <Link
+            to="/dashboard/profile"
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl transition-all",
+              location.pathname === "/dashboard/profile"
+                ? "bg-primary/10 text-primary"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+            )}
+          >
+            <Users className={cn(
+              "h-6 w-6",
+              location.pathname === "/dashboard/profile" && "scale-110"
+            )} />
+            <span className="text-[10px] font-medium truncate max-w-full">
+              {t("common.profile")}
+            </span>
+            {location.pathname === "/dashboard/profile" && (
+              <div className="w-1 h-1 rounded-full bg-primary mt-0.5" />
+            )}
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }
