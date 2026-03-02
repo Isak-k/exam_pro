@@ -44,24 +44,34 @@ export default function StudentMessages() {
     if (!user) return;
     setLoading(true);
     try {
+      console.log("Loading messages for user:", user.uid);
       const q = query(
         collection(db, "studentFeedback"),
         where("userId", "==", user.uid),
         orderBy("createdAt", "desc")
       );
       const snap = await getDocs(q);
+      console.log("Messages found:", snap.docs.length);
       const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      console.log("Messages data:", data);
       setMessages(data);
       if (data.length > 0) {
         setSelected(data[0]);
         loadReplies(data[0].id);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      console.error("Error loading messages:", e);
+      console.error("Error code:", e.code);
+      console.error("Error message:", e.message);
+      toast({ 
+        title: "Error loading messages", 
+        description: e.message || "Check console for details", 
+        variant: "destructive" 
+      });
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, toast]);
 
   useEffect(() => {
     loadMessages();
@@ -75,7 +85,8 @@ export default function StudentMessages() {
     }
     try {
       setSending(true);
-      await addDoc(collection(db, "studentFeedback"), {
+      console.log("Sending message with userId:", user.uid);
+      const docRef = await addDoc(collection(db, "studentFeedback"), {
         userId: user.uid,
         email: profile.email,
         fullName: profile.full_name,
@@ -84,10 +95,14 @@ export default function StudentMessages() {
         status: "open",
         createdAt: Timestamp.now(),
       });
+      console.log("Message sent with ID:", docRef.id);
       setNewMessage("");
       toast({ title: "Sent", description: "Your message has been sent." });
       loadMessages();
     } catch (e: any) {
+      console.error("Error sending message:", e);
+      console.error("Error code:", e.code);
+      console.error("Error message:", e.message);
       toast({ title: "Failed to send", description: e.message || "Please try again.", variant: "destructive" });
     } finally {
       setSending(false);
