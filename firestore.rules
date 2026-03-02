@@ -83,6 +83,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // --- Archived Results Collection ---
+    match /archivedResults/{resultId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
     // --- Student Feedback/Messages Collection ---
     match /studentFeedback/{feedbackId} {
       // Students can create their own messages
