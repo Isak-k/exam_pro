@@ -49,16 +49,12 @@ const Index = () => {
     <div className="min-h-screen bg-background font-sans selection:bg-primary/20 overflow-hidden">
       {/* Hero Section */}
       <div className="relative min-h-screen flex flex-col overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-100 via-teal-100 to-cyan-50 dark:from-cyan-950/30 dark:via-teal-950/30 dark:to-cyan-950/20" />
+        {/* Solid cyan background */}
+        <div className="absolute inset-0 bg-[#22d3ee] dark:bg-[#06b6d4]" />
         
-        {/* Animated gradient orbs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full blur-3xl opacity-30 animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full blur-3xl opacity-30 animate-float delay-300" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-300 to-teal-300 rounded-full blur-3xl opacity-15 animate-pulse" />
-        
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
+
         
         <div className="relative container mx-auto px-4 py-6 lg:py-8 flex-1 flex flex-col">
           {/* Navigation */}
@@ -88,27 +84,27 @@ const Index = () => {
           <div className="flex-1 flex items-center justify-center">
             <div className="max-w-5xl mx-auto text-center space-y-8 animate-slide-up px-4">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-teal-500/10 border border-cyan-500/20 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 cursor-default group">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 border border-white/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 cursor-default group">
                 <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
                 </span>
-                <span className="text-sm font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                <span className="text-sm font-semibold text-white">
                   {t("hero.badge")}
                 </span>
               </div>
 
               {/* Main Heading */}
               <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-display font-bold leading-[1.1] tracking-tight">
-                <span className="text-foreground">{t("hero.titlePre")}</span>
+                <span className="text-white drop-shadow-lg">{t("hero.titlePre")}</span>
                 <br/>
-                <span className="bg-gradient-to-r from-cyan-500 via-teal-500 to-blue-500 bg-clip-text text-transparent animate-gradient-x">
+                <span className="text-white drop-shadow-lg">
                   {t("hero.titleHighlight")}
                 </span>
               </h1>
 
               {/* Description */}
-              <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
                 {t("hero.description")}
               </p>
 
@@ -116,7 +112,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button
                   size="lg"
-                  className="group h-14 px-8 text-lg font-semibold rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white shadow-2xl shadow-cyan-600/40 hover:shadow-3xl hover:shadow-cyan-600/50 transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-cyan-500"
+                  className="group h-14 px-8 text-lg font-semibold rounded-2xl bg-white hover:bg-gray-50 text-cyan-600 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 active:scale-95"
                   onClick={() => navigate("/auth")}
                 >
                   {t("common.getStarted")}
@@ -125,7 +121,7 @@ const Index = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-14 px-8 text-lg font-semibold rounded-2xl border-2 border-cyan-600 dark:border-cyan-500 bg-white dark:bg-gray-900 hover:bg-cyan-50 dark:hover:bg-cyan-950/50 hover:border-cyan-700 dark:hover:border-cyan-400 text-cyan-700 dark:text-cyan-400 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+                  className="h-14 px-8 text-lg font-semibold rounded-2xl border-2 border-white bg-transparent hover:bg-white/10 text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
                   onClick={() => navigate("/about")}
                 >
                   {t("common.learnMore")}
@@ -133,17 +129,17 @@ const Index = () => {
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex flex-wrap items-center justify-center gap-6 pt-8 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-center gap-6 pt-8 text-sm text-white/90">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <CheckCircle className="h-5 w-5 text-white" />
                   <span>No credit card required</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <CheckCircle className="h-5 w-5 text-white" />
                   <span>Free forever</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <CheckCircle className="h-5 w-5 text-white" />
                   <span>Setup in 2 minutes</span>
                 </div>
               </div>
@@ -153,7 +149,7 @@ const Index = () => {
       </div>
 
       {/* Features Section */}
-      <div className="relative py-24 bg-gradient-to-b from-cyan-50/50 to-teal-50/50 dark:from-cyan-950/20 dark:to-teal-950/20">
+      <div className="relative py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-slide-up">
             <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
@@ -188,8 +184,8 @@ const Index = () => {
 
       {/* CTA Section */}
       <div className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-500" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="absolute inset-0 bg-[#22d3ee] dark:bg-[#06b6d4]" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
         
         <div className="relative container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-8 animate-slide-up">
