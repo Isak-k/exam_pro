@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { newPasswordSchema } from "@/lib/validations";
 import { Loader2, User, Mail, Lock, Save, Shield, ArrowLeft } from "lucide-react";
@@ -162,6 +162,7 @@ const Settings = () => {
             <form onSubmit={handleUpdateProfile} className="space-y-6">
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
+                  <AvatarImage src={profile?.avatar_url || "/placeholder.svg"} alt={profile?.full_name} />
                   <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
                     {initials}
                   </AvatarFallback>

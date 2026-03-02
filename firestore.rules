@@ -9,21 +9,31 @@ service cloud.firestore {
 
     // --- Student Feedback Collection ---
     match /studentFeedback/{feedbackId} {
-      allow create: if isAuthenticated(); // students can send messages
+      // Students can create their own messages
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      
+      // Students can read their own messages, admins can read all
       allow read: if isAuthenticated() && (
-        isAdmin() || isSuperAdmin() ||
-        (exists(/databases/$(database)/documents/studentFeedback/$(feedbackId)) &&
-         get(/databases/$(database)/documents/studentFeedback/$(feedbackId)).data.userId == request.auth.uid)
+        isAdmin() || 
+        isSuperAdmin() ||
+        resource.data.userId == request.auth.uid
       );
+      
+      // Only admins can update/delete messages
       allow update, delete: if isAuthenticated() && (isAdmin() || isSuperAdmin());
 
       match /replies/{replyId} {
-        allow create: if isAuthenticated(); // student/admin replies
+        // Both students and admins can create replies
+        allow create: if isAuthenticated();
+        
+        // Students can read replies to their own messages, admins can read all
         allow read: if isAuthenticated() && (
-          isAdmin() || isSuperAdmin() ||
-          (exists(/databases/$(database)/documents/studentFeedback/$(feedbackId)) &&
-           get(/databases/$(database)/documents/studentFeedback/$(feedbackId)).data.userId == request.auth.uid)
+          isAdmin() || 
+          isSuperAdmin() ||
+          get(/databases/$(database)/documents/studentFeedback/$(feedbackId)).data.userId == request.auth.uid
         );
+        
+        // Only admins can update/delete replies
         allow update, delete: if isAuthenticated() && (isAdmin() || isSuperAdmin());
       }
     }
