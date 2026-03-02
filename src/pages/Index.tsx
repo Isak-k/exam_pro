@@ -63,19 +63,23 @@ const Index = () => {
           {/* Navigation */}
           <nav className="flex items-center justify-between animate-fade-in">
             <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate("/")}>
-              <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg shadow-cyan-500/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-cyan-500/40">
+              <div className="h-12 w-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30">
                 <GraduationCap className="h-7 w-7 text-white" />
               </div>
-              <span className="font-display font-bold text-2xl tracking-tight bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="font-display font-bold text-2xl tracking-tight text-white drop-shadow-lg">
                 ExamPro
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <LanguageToggle />
-              <ThemeToggle />
+              <div className="[&_button]:text-white [&_button]:bg-white/10 [&_button]:backdrop-blur-sm [&_button]:border-white/20 [&_button]:hover:bg-white/20 [&_button]:shadow-lg">
+                <LanguageToggle />
+              </div>
+              <div className="[&_button]:text-white [&_button]:bg-white/10 [&_button]:backdrop-blur-sm [&_button]:border-white/20 [&_button]:hover:bg-white/20 [&_button]:shadow-lg">
+                <ThemeToggle />
+              </div>
               <Button 
                 variant="ghost" 
-                className="hidden sm:flex hover:bg-cyan-50 dark:hover:bg-cyan-950/30 rounded-xl"
+                className="hidden sm:flex text-white bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 shadow-lg rounded-xl"
                 onClick={() => navigate("/auth")}
               >
                 {t("common.signIn")}
