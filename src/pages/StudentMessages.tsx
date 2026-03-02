@@ -9,10 +9,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { MessageSquare, Send, Trash2 } from "lucide-react";
 import { collection, addDoc, getDocs, query, where, orderBy, Timestamp, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
+import { useTranslation } from "react-i18next";
 
 export default function StudentMessages() {
   const { user, profile } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [selected, setSelected] = useState<any | null>(null);
@@ -86,7 +88,7 @@ export default function StudentMessages() {
   const sendNewMessage = async () => {
     if (!user || !profile) return;
     if (!newMessage.trim()) {
-      toast({ title: "Write a message", description: "Please enter your comment.", variant: "destructive" });
+      toast({ title: t("student.messages.writeMessageError"), description: t("student.messages.writeMessageErrorDesc"), variant: "destructive" });
       return;
     }
     try {
@@ -103,13 +105,13 @@ export default function StudentMessages() {
       });
       console.log("Message sent with ID:", docRef.id);
       setNewMessage("");
-      toast({ title: "Sent", description: "Your message has been sent." });
+      toast({ title: t("student.messages.messageSent"), description: t("student.messages.messageSentDesc") });
       loadMessages();
     } catch (e: any) {
       console.error("Error sending message:", e);
       console.error("Error code:", e.code);
       console.error("Error message:", e.message);
-      toast({ title: "Failed to send", description: e.message || "Please try again.", variant: "destructive" });
+      toast({ title: t("student.messages.sendFailed"), description: e.message || t("student.messages.sendFailedDesc"), variant: "destructive" });
     } finally {
       setSending(false);
     }
@@ -136,15 +138,15 @@ export default function StudentMessages() {
   };
 
   const deleteMessage = async (messageId: string) => {
-    if (!confirm("Are you sure you want to delete this message? This action cannot be undone.")) return;
+    if (!confirm(t("student.messages.deleteConfirm"))) return;
     try {
       await deleteDoc(doc(db, "studentFeedback", messageId));
-      toast({ title: "Message deleted" });
+      toast({ title: t("student.messages.messageDeleted") });
       setSelected(null);
       setReplies([]);
       loadMessages();
     } catch (e: any) {
-      toast({ title: "Failed to delete", description: e.message || "Please try again.", variant: "destructive" });
+      toast({ title: t("student.messages.deleteFailed"), description: e.message || t("student.messages.deleteFailedDesc"), variant: "destructive" });
     }
   };
 
@@ -153,8 +155,8 @@ export default function StudentMessages() {
       <div className="space-y-6 animate-fade-in max-w-5xl">
         <div className="flex items-start sm:items-center justify-between">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-display font-bold">Messages</h1>
-            <p className="text-muted-foreground mt-1">Send a message to admins and view replies</p>
+            <h1 className="text-2xl lg:text-3xl font-display font-bold">{t("student.messages.title")}</h1>
+            <p className="text-muted-foreground mt-1">{t("student.messages.subtitle")}</p>
           </div>
         </div>
 
@@ -168,9 +170,9 @@ export default function StudentMessages() {
             </CardHeader>
             <CardContent className="space-y-3 max-h-[420px] overflow-y-auto">
               {loading ? (
-                <div className="text-sm text-muted-foreground">Loading...</div>
+                <div className="text-sm text-muted-foreground">{t("common.loading")}</div>
               ) : messages.length === 0 ? (
-                <div className="text-sm text-muted-foreground">No messages yet.</div>
+                <div className="text-sm text-muted-foreground">{t("student.messages.noMessages")}</div>
               ) : (
                 messages.map((m) => (
                   <button
@@ -211,19 +213,19 @@ export default function StudentMessages() {
           <div className="md:col-span-2 space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>New Message</CardTitle>
+                <CardTitle>{t("student.messages.newMessage")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Textarea
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Write your comment or question to the admins..."
+                  placeholder={t("student.messages.writeComment")}
                   rows={4}
                 />
                 <div className="flex justify-end">
                   <Button onClick={sendNewMessage} disabled={sending}>
                     <Send className="h-4 w-4 mr-2" />
-                    {sending ? "Sending..." : "Send"}
+                    {sending ? t("student.messages.sending") : t("student.messages.send")}
                   </Button>
                 </div>
               </CardContent>
