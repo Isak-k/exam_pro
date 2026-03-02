@@ -47,12 +47,18 @@ export default function StudentMessages() {
       console.log("Loading messages for user:", user.uid);
       const q = query(
         collection(db, "studentFeedback"),
-        where("userId", "==", user.uid),
-        orderBy("createdAt", "desc")
+        where("userId", "==", user.uid)
       );
       const snap = await getDocs(q);
       console.log("Messages found:", snap.docs.length);
-      const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      // Sort manually in JavaScript instead of using Firestore orderBy
+      const data = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .sort((a: any, b: any) => {
+          const aTime = a.createdAt?.toMillis?.() || 0;
+          const bTime = b.createdAt?.toMillis?.() || 0;
+          return bTime - aTime; // descending order
+        });
       console.log("Messages data:", data);
       setMessages(data);
       if (data.length > 0) {
