@@ -94,8 +94,14 @@ service cloud.firestore {
         resource.data.userId == request.auth.uid
       );
       
-      // Only admins can update/delete messages
-      allow update, delete: if isAdmin();
+      // Students can delete their own messages, admins can delete any
+      allow delete: if isAuthenticated() && (
+        isAdmin() || 
+        resource.data.userId == request.auth.uid
+      );
+      
+      // Only admins can update messages
+      allow update: if isAdmin();
 
       match /replies/{replyId} {
         // Both students and admins can create replies

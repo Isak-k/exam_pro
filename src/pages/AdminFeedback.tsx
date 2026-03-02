@@ -5,8 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { MessageSquare, Send } from "lucide-react";
-import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp } from "firebase/firestore";
+import { MessageSquare, Send, Trash2 } from "lucide-react";
+import { collection, getDocs, query, orderBy, limit, addDoc, Timestamp, deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
 
 export default function AdminFeedback() {
@@ -77,6 +77,19 @@ export default function AdminFeedback() {
     }
   };
 
+  const deleteMessage = async (messageId: string) => {
+    if (!confirm("Are you sure you want to delete this message? This action cannot be undone.")) return;
+    try {
+      await deleteDoc(doc(db, "studentFeedback", messageId));
+      toast({ title: "Message deleted" });
+      setSelected(null);
+      setReplies([]);
+      fetchFeedback();
+    } catch (e: any) {
+      toast({ title: "Failed to delete", description: e.message || "Try again", variant: "destructive" });
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6 animate-fade-in max-w-6xl">
@@ -113,9 +126,24 @@ export default function AdminFeedback() {
                       selected?.id === m.id ? "bg-muted" : ""
                     }`}
                   >
-                    <div className="font-medium">{m.fullName} <span className="text-xs text-muted-foreground">({m.email})</span></div>
-                    <div className="text-sm line-clamp-2">{m.message}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{m.createdAt?.toDate?.().toLocaleString?.() || ""}</div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium">{m.fullName} <span className="text-xs text-muted-foreground">({m.email})</span></div>
+                        <div className="text-sm line-clamp-2">{m.message}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{m.createdAt?.toDate?.().toLocaleString?.() || ""}</div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteMessage(m.id);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </button>
                 ))
               )}
