@@ -49,11 +49,14 @@ const Index = () => {
     <div className="min-h-screen bg-background font-sans selection:bg-primary/20 overflow-hidden">
       {/* Hero Section */}
       <div className="relative min-h-screen flex flex-col overflow-hidden">
-        {/* Solid cyan background */}
-        <div className="absolute inset-0 bg-[#22d3ee] dark:bg-[#06b6d4]" />
+        {/* Modern gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 via-teal-500 to-blue-600 dark:from-cyan-600 dark:via-teal-600 dark:to-blue-700" />
+        
+        {/* Subtle animated overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
         
         {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:40px_40px]" />
 
         
         <div className="relative container mx-auto px-4 py-6 lg:py-8 flex-1 flex flex-col">
@@ -149,11 +152,11 @@ const Index = () => {
       </div>
 
       {/* Features Section - Hidden on mobile */}
-      <div className="hidden md:block relative py-24 bg-white dark:bg-gray-900">
+      <div className="hidden md:block relative py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-slide-up">
             <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
-              Why Choose <span className="bg-gradient-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent">ExamPro</span>
+              Why Choose <span className="bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">ExamPro</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Everything you need to conduct secure, efficient online examinations
@@ -170,7 +173,7 @@ const Index = () => {
                 <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <feature.icon className="h-7 w-7 text-white" />
                 </div>
-                <h3 className="text-xl font-display font-bold mb-2 group-hover:text-cyan-600 transition-colors">
+                <h3 className="text-xl font-display font-bold mb-2 group-hover:bg-gradient-to-r group-hover:from-cyan-600 group-hover:to-teal-600 group-hover:bg-clip-text group-hover:text-transparent transition-all">
                   {feature.title}
                 </h3>
                 <p className="text-muted-foreground">
@@ -184,8 +187,9 @@ const Index = () => {
 
       {/* CTA Section - Hidden on mobile */}
       <div className="hidden md:block relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-[#22d3ee] dark:bg-[#06b6d4]" />
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-teal-500 to-blue-600 dark:from-cyan-600 dark:via-teal-600 dark:to-blue-700" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:40px_40px]" />
         
         <div className="relative container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-8 animate-slide-up">
