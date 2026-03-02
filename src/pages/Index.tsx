@@ -148,8 +148,8 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Features Section */}
-      <div className="relative py-24 bg-white dark:bg-gray-900">
+      {/* Features Section - Hidden on mobile */}
+      <div className="hidden md:block relative py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-slide-up">
             <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
@@ -182,8 +182,8 @@ const Index = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className="relative py-24 overflow-hidden">
+      {/* CTA Section - Hidden on mobile */}
+      <div className="hidden md:block relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-[#22d3ee] dark:bg-[#06b6d4]" />
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
         
