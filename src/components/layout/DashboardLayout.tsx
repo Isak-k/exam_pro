@@ -123,8 +123,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate("/settings")}>
-                <User className="mr-2 h-4 w-4" />
-                {t("common.profile")}
+                <Settings className="mr-2 h-4 w-4" />
+                {t("common.settings")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut}>
@@ -210,10 +210,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
-                  <Users className="mr-2 h-4 w-4" />
-                  {t("common.profile")}
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/settings")}>
                   <Settings className="mr-2 h-4 w-4" />
                   {t("common.settings")}
