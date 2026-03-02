@@ -147,10 +147,9 @@ Study Material:
 ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
 
     try {
-      // Using Google Gemini API - trying available models in order
-      // First try: gemini-1.5-flash (recommended for most use cases)
-      let response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      // Using Google Gemini API with gemini-2.5-flash (latest and most stable model)
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         {
           method: 'POST',
           headers: {
@@ -172,29 +171,12 @@ ${pdfText.substring(0, 30000)}`; // Limit to 30k chars to avoid token limits
         }
       );
 
-      // If gemini-1.5-flash doesn't work, try gemini-1.5-pro (more capable but slower)
       if (!response.ok) {
-        response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{
-                  text: prompt
-                }]
-              }],
-              generationConfig: {
-                temperature: 0.7,
-                topK: 40,
-                topP: 0.95,
-                maxOutputTokens: 8192,
-              }
-            })
-          }
+        const errorData = await response.json().catch(() => ({}));
+        console.error('API Error:', errorData);
+        throw new Error(
+          errorData.error?.message || 
+          `API request failed: ${response.status} ${response.statusText}`
         );
       }
 
