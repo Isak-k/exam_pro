@@ -322,6 +322,27 @@ const resources = {
             "title": "No results yet",
             "description": "Complete an exam to see your results here"
           }
+        },
+        "messages": {
+          "title": "Messages",
+          "subtitle": "Contact administrators",
+          "send": "Send",
+          "sending": "Sending...",
+          "newMessage": "New Message",
+          "writeMessage": "Write your message...",
+          "writeComment": "Write your comment or question to the admins...",
+          "noMessages": "No messages yet",
+          "noMessagesDesc": "Start a conversation with the administrators",
+          "messageSent": "Message sent",
+          "messageSentDesc": "Your message has been sent to the administrators",
+          "sendFailed": "Failed to send",
+          "sendFailedDesc": "Please try again",
+          "writeMessageError": "Write a message",
+          "writeMessageErrorDesc": "Please enter your comment.",
+          "deleteConfirm": "Are you sure you want to delete this message? This action cannot be undone.",
+          "messageDeleted": "Message deleted",
+          "deleteFailed": "Failed to delete",
+          "deleteFailedDesc": "Please try again"
         }
       },
       "dashboard": {
@@ -746,6 +767,33 @@ const resources = {
             "marks_plural": "Qabxii {{count}}",
             "explanation": "Ibsa:"
           }
+        },
+        "review": "Deebii Ilaali",
+        "pendingMessage": "Bu'aan keessan yeroo qoraan maxxansu ni argama.",
+        "empty": {
+          "title": "Ammaan bu'aan hin jiru",
+          "description": "Bu'aa kee asitti arguuf qormaata xumuri"
+        },
+        "messages": {
+          "title": "Ergaa",
+          "subtitle": "Bulchitoota qunnamuu",
+          "send": "Ergi",
+          "sending": "Ergaa jira...",
+          "newMessage": "Ergaa Haaraa",
+          "writeMessage": "Ergaa kee barreessi...",
+          "writeComment": "Yaada ykn gaaffii kee bulchitootaaf barreessi...",
+          "noMessages": "Ammaan ergaan hin jiru",
+          "noMessagesDesc": "Bulchitoota waliin haasawa jalqabi",
+          "messageSent": "Ergaan ergameera",
+          "messageSentDesc": "Ergaan kee bulchitootaaf ergameera",
+          "sendFailed": "Erguu hin dandeenye",
+          "sendFailedDesc": "Maaloo irra deebi'ii yaali",
+          "writeMessageError": "Ergaa barreessi",
+          "writeMessageErrorDesc": "Maaloo yaada kee galchi.",
+          "deleteConfirm": "Ergaa kana haquu barbaaddaa? Gocha kun deebi'ee hin argamu.",
+          "messageDeleted": "Ergaan haqameera",
+          "deleteFailed": "Haquu hin dandeenye",
+          "deleteFailedDesc": "Maaloo irra deebi'ii yaali"
         }
       },
       "dashboard": {
@@ -1198,6 +1246,27 @@ const resources = {
             "title": "እስካሁን ምንም ውጤት የለም",
             "description": "ውጤትዎን እዚህ ለማየት ፈተና ያጠናቅቁ"
           }
+        },
+        "messages": {
+          "title": "መልዕክቶች",
+          "subtitle": "አስተዳዳሪዎችን ያነጋግሩ",
+          "send": "ላክ",
+          "sending": "በመላክ ላይ...",
+          "newMessage": "አዲስ መልዕክት",
+          "writeMessage": "መልዕክትዎን ይፃፉ...",
+          "writeComment": "አስተያየትዎን ወይም ጥያቄዎን ለአስተዳዳሪዎች ይፃፉ...",
+          "noMessages": "እስካሁን ምንም መልዕክት የለም",
+          "noMessagesDesc": "ከአስተዳዳሪዎች ጋር ውይይት ይጀምሩ",
+          "messageSent": "መልዕክት ተልኳል",
+          "messageSentDesc": "መልዕክትዎ ለአስተዳዳሪዎች ተልኳል",
+          "sendFailed": "መላክ አልተቻለም",
+          "sendFailedDesc": "እባክዎ እንደገና ይሞክሩ",
+          "writeMessageError": "መልዕክት ይፃፉ",
+          "writeMessageErrorDesc": "እባክዎ አስተያየትዎን ያስገቡ።",
+          "deleteConfirm": "ይህን መልዕክት መሰረዝ እርግጠኛ ነዎት? ይህ ድርጊት መልሰው ማግኘት አይችሉም።",
+          "messageDeleted": "መልዕክት ተሰርዟል",
+          "deleteFailed": "መሰረዝ አልተቻለም",
+          "deleteFailedDesc": "እባክዎ እንደገና ይሞክሩ"
         }
       },
       "dashboard": {
