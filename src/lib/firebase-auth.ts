@@ -3,6 +3,8 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
   User
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, Timestamp } from 'firebase/firestore';
@@ -67,4 +69,55 @@ export async function updateUserProfile(
     ...updates,
     updatedAt: Timestamp.now()
   }, { merge: true });
+}
+
+export async function signInWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  const result = await signInWithPopup(auth, provider);
+  const user = result.user;
+  
+  // Check if user profile exists
+  const userProfile = await getUserProfile(user.uid);
+  
+  // If user doesn't exist, this is their first sign-in
+  // Return the user and a flag indicating they need to complete profile
+  if (!userProfile) {
+    return {
+      user,
+      isNewUser: true,
+      needsProfileSetup: true
+    };
+  }
+  
+  return {
+    user,
+    isNewUser: false,
+    needsProfileSetup: false
+  };
+}
+
+export async function completeGoogleSignUpProfile(
+  userId: string,
+  email: string,
+  fullName: string,
+  departmentId: string,
+  role: AppRole = 'student'
+) {
+  const userProfile: UserProfile = {
+    userId,
+    email,
+    fullName,
+    avatarUrl: null,
+    role,
+    departmentId,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now()
+  };
+
+  await setDoc(doc(db, 'users', userId), userProfile);
+  return userProfile;
 }
