@@ -5,7 +5,7 @@ import { getStudentAttempts } from "@/lib/firebase-attempts";
 import { SimpleLeaderboard } from "@/components/SimpleLeaderboard";
 import { StatCard } from "./StatCard";
 import { ExamCard } from "@/components/exam/ExamCard";
-import { ClipboardList, Trophy, Clock, CheckCircle } from "lucide-react";
+import { ClipboardList, Trophy, Clock, CheckCircle, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
