@@ -40,6 +40,7 @@ import MigrateExams from "./pages/MigrateExams";
 import ExamDiagnostic from "./pages/ExamDiagnostic";
 import SuperAdmin from "./pages/SuperAdmin";
 import PermissionTest from "./pages/PermissionTest";
+import AIStudyAssistant from "./pages/AIStudyAssistant";
 
 const queryClient = new QueryClient();
 
@@ -179,6 +180,11 @@ function AppRoutes() {
         <Route path="/dashboard/messages" element={
           <ProtectedRoute allowedRoles={["student"]}>
             <StudentMessages />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/ai-assistant" element={
+          <ProtectedRoute allowedRoles={["student"]}>
+            <AIStudyAssistant />
           </ProtectedRoute>
         } />
         <Route path="/dashboard/results/:attemptId/review" element={
