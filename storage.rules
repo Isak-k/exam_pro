@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isImageFile() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidSize() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB limit
+    }
+    
+    // Avatar images
+    match /avatars/{userId}/{fileName} {
+      // Anyone authenticated can read avatars
+      allow read: if isAuthenticated();
+      
+      // Users can only upload their own avatar
+      allow write: if isAuthenticated() && 
+                     request.auth.uid == userId &&
+                     isImageFile() &&
+                     isValidSize();
+    }
+    
+    // Exam images (for questions)
+    match /exam-images/{examId}/{fileName} {
+      // Anyone authenticated can read exam images
+      allow read: if isAuthenticated();
+      
+      // Only authenticated users can upload exam images
+      // Note: We rely on Firestore rules to ensure only admins create exams
+      allow write: if isAuthenticated() &&
+                     isImageFile() &&
+                     isValidSize();
+    }
+  }
+}
