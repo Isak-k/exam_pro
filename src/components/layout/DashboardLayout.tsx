@@ -92,6 +92,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Desktop header - Only visible on large screens */}
+      <header className="hidden lg:block fixed top-0 left-64 right-0 z-40 h-16 border-b bg-card/95 backdrop-blur-sm">
+        <div className="h-full px-6 flex items-center justify-end gap-4">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
+      </header>
+
       {/* Mobile header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-16 border-b bg-card/95 backdrop-blur-sm flex items-center justify-between px-4">
         <div className="flex items-center gap-3">
@@ -236,7 +244,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       )}
 
       {/* Main content */}
-      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0 pb-20 lg:pb-0">
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-16 pb-20 lg:pb-0">
         <div className="p-6 lg:p-8">{children}</div>
       </main>
 
