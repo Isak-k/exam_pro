@@ -381,6 +381,29 @@ const resources = {
         "noUpcomingExams": "No upcoming exams",
         "caughtUp": "You're all caught up!"
       },
+      "aiAssistant": {
+        "title": "AI Study Assistant",
+        "subtitle": "Choose your AI-powered study tool",
+        "description": "Get AI-powered help with your studies using Google NotebookLM",
+        "notebookDescription": "Get AI-powered help with your studies. Upload documents, ask questions, and get instant answers.",
+        "loading": "Loading AI Study Assistant...",
+        "error": "Unable to load AI Study Assistant",
+        "errorDescription": "The AI Study Assistant could not be loaded. Please try again.",
+        "openExternal": "Open in External Browser",
+        "note": "Note: These tools open in your browser. You may need to sign in with your Google account for NotebookLM.",
+        "launch": "Launch"
+      },
+      "mindMap": {
+        "title": "Mind Map Generator",
+        "subtitle": "Powered by CogniGuide AI",
+        "description": "Create AI-powered mind maps to visualize and organize your study materials",
+        "loading": "Loading Mind Map Generator...",
+        "error": "Unable to load Mind Map Generator",
+        "errorDescription": "The Mind Map Generator could not be loaded. Please try again.",
+        "openExternal": "Open in External Browser",
+        "note": "Note: Create visual mind maps to better understand complex topics.",
+        "launch": "Launch"
+      },
       "exam": {
         "status": {
           "published": "Published",
@@ -831,6 +854,29 @@ const resources = {
         "checkBackLater": "Qormaata haaraaf booda deebi'ii ilaali",
         "noUpcomingExams": "Qormaanni dhufu hin jiru",
         "caughtUp": "Hunda xumurtee jirta!"
+      },
+      "aiAssistant": {
+        "title": "Gargaaraa Barnoota AI",
+        "subtitle": "Meeshaa barnoota AI kee filadhu",
+        "description": "Barnoota keetiif gargaarsa AI argadhu Google NotebookLM fayyadamuun",
+        "notebookDescription": "Barnoota keetiif gargaarsa AI argadhu. Galmee ol kaa'i, gaaffii gaafadhu, fi deebii battalumatti argadhu.",
+        "loading": "Gargaaraa Barnoota AI fe'aa jira...",
+        "error": "Gargaaraa Barnoota AI fe'uu hin dandeenye",
+        "errorDescription": "Gargaaraan Barnoota AI fe'amuu hin dandeenye. Maaloo irra deebi'ii yaali.",
+        "openExternal": "Geessituu Alaa Keessatti Bani",
+        "note": "Yaadannoo: Meeshaaleen kun geessituu kee keessatti banamuu. NotebookLM fayyadamuuf akkaawuntii Google keetiin seenuu si barbaachisuu danda'a.",
+        "launch": "Jalqabi"
+      },
+      "mindMap": {
+        "title": "Uumaa Kaartaa Sammuu",
+        "subtitle": "CogniGuide AI'n Hojjetame",
+        "description": "Meeshaalee barnoota keetii mul'isuuf fi qindeessuuf kaartaa sammuu AI uumi",
+        "loading": "Uumaa Kaartaa Sammuu fe'aa jira...",
+        "error": "Uumaa Kaartaa Sammuu fe'uu hin dandeenye",
+        "errorDescription": "Uumaan Kaartaa Sammuu fe'amuu hin dandeenye. Maaloo irra deebi'ii yaali.",
+        "openExternal": "Geessituu Alaa Keessatti Bani",
+        "note": "Yaadannoo: Dhimmoota walxaxaa hubachuuf kaartaa sammuu mul'ataa uumi.",
+        "launch": "Jalqabi"
       },
       "exam": {
         "status": {
@@ -1304,6 +1350,29 @@ const resources = {
         "checkBackLater": "ለአዳዲስ ፈተናዎች በኋላ ተመልሰው ይመልከቱ",
         "noUpcomingExams": "ምንም መጪ ፈተና የለም",
         "caughtUp": "ሁሉንም ጨርሰዋል!"
+      },
+      "aiAssistant": {
+        "title": "AI የጥናት ረዳት",
+        "subtitle": "AI-የተጎለበተ የጥናት መሳሪያዎን ይምረጡ",
+        "description": "Google NotebookLM በመጠቀም ለጥናትዎ AI-የተጎለበተ እገዛ ያግኙ",
+        "notebookDescription": "ለጥናትዎ AI-የተጎለበተ እገዛ ያግኙ። ሰነዶችን ይስቀሉ፣ ጥያቄዎችን ይጠይቁ እና ፈጣን መልሶችን ያግኙ።",
+        "loading": "AI የጥናት ረዳት በመጫን ላይ...",
+        "error": "AI የጥናት ረዳት መጫን አልተቻለም",
+        "errorDescription": "AI የጥናት ረዳት መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "openExternal": "በውጫዊ አሳሽ ውስጥ ክፈት",
+        "note": "ማስታወሻ: እነዚህ መሳሪያዎች በአሳሽዎ ውስጥ ይከፈታሉ። NotebookLMን ለመጠቀም በGoogle መለያዎ መግባት ሊያስፈልግዎ ይችላል።",
+        "launch": "ጀምር"
+      },
+      "mindMap": {
+        "title": "የአእምሮ ካርታ ጀነሬተር",
+        "subtitle": "በCogniGuide AI የተጎለበተ",
+        "description": "የጥናት ቁሳቁሶችዎን ለማየት እና ለማደራጀት AI-የተጎለበተ የአእምሮ ካርታዎችን ይፍጠሩ",
+        "loading": "የአእምሮ ካርታ ጀነሬተር በመጫን ላይ...",
+        "error": "የአእምሮ ካርታ ጀነሬተር መጫን አልተቻለም",
+        "errorDescription": "የአእምሮ ካርታ ጀነሬተር መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+        "openExternal": "በውጫዊ አሳሽ ውስጥ ክፈት",
+        "note": "ማስታወሻ: ውስብስብ ርዕሶችን በተሻለ ለመረዳት የእይታ የአእምሮ ካርታዎችን ይፍጠሩ።",
+        "launch": "ጀምር"
       },
       "exam": {
         "status": {
