@@ -5,7 +5,7 @@ import { getStudentAttempts } from "@/lib/firebase-attempts";
 import { SimpleLeaderboard } from "@/components/SimpleLeaderboard";
 import { StatCard } from "./StatCard";
 import { ExamCard } from "@/components/exam/ExamCard";
-import { ClipboardList, Trophy, Clock, CheckCircle, Brain } from "lucide-react";
+import { ClipboardList, Trophy, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -149,34 +149,6 @@ export function StudentDashboard() {
           <SimpleLeaderboard departmentId={profile.departmentId} />
         </div>
       )}
-
-      {/* AI Study Assistant Card */}
-      <div className="w-full">
-        <Link to="/dashboard/ai-assistant">
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-6 transition-all hover:shadow-2xl hover:shadow-purple-500/30 hover:scale-[1.02] cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-pink-600/20 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-center gap-4">
-              <div className="h-14 w-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                <Brain className="h-7 w-7 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-display font-bold text-white mb-1">
-                  {t("aiAssistant.title", "AI Study Assistant")}
-                </h3>
-                <p className="text-white/90 text-sm">
-                  {t("aiAssistant.description", "Get AI-powered help with your studies using Google NotebookLM")}
-                </p>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-                <span className="text-sm font-medium">{t("common.launch", "Launch")}</span>
-                <svg className="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </Link>
-      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">

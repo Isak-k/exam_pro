@@ -38,6 +38,7 @@ import {
   Building,
   User,
   MessageSquare,
+  Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -77,6 +78,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     { href: "/dashboard/exams", label: t("dashboard.menu.availableExams"), icon: ClipboardList },
     { href: "/dashboard/results", label: t("dashboard.menu.myResults"), icon: Trophy },
     { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
+    { href: "/dashboard/ai-assistant", label: t("aiAssistant.title", "AI Study Assistant"), icon: Brain },
   ];
 
   const links = role === "admin" ? adminLinks : studentLinks;
