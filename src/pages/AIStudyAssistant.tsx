@@ -11,7 +11,7 @@ import { toast } from "sonner";
 const NOTEBOOK_LM_URL = "https://notebooklm.google.com/";
 const MIND_MAP_URL = "https://www.cogniguide.app/mind-maps/mind-map-ai-generator";
 const CHATGPT_URL = "https://chatgpt.com/";
-const GEMINI_URL = "https://gemini.google.com/app";
+const GEMINI_URL = "https://gemini.google.com";
 
 export default function AIStudyAssistant() {
   const navigate = useNavigate();
