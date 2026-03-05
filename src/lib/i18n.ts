@@ -404,6 +404,14 @@ const resources = {
         "note": "Note: Create visual mind maps to better understand complex topics.",
         "launch": "Launch"
       },
+      "chatgpt": {
+        "title": "ChatGPT",
+        "description": "Chat with AI to get explanations, solve problems, and learn new concepts interactively."
+      },
+      "gemini": {
+        "title": "Google Gemini",
+        "description": "Google's advanced AI assistant for research, writing, and creative problem-solving."
+      },
       "exam": {
         "status": {
           "published": "Published",
@@ -877,6 +885,14 @@ const resources = {
         "openExternal": "Geessituu Alaa Keessatti Bani",
         "note": "Yaadannoo: Dhimmoota walxaxaa hubachuuf kaartaa sammuu mul'ataa uumi.",
         "launch": "Jalqabi"
+      },
+      "chatgpt": {
+        "title": "ChatGPT",
+        "description": "Ibsa argachuuf, rakkoo furuu fi yaad-rimee haaraa barachuuf AI waliin haasa'i."
+      },
+      "gemini": {
+        "title": "Google Gemini",
+        "description": "Gargaaraa AI Google kan ol'aanaa qorannoo, barreeffama fi rakkoo kalaqaa furuuf."
       },
       "exam": {
         "status": {
@@ -1373,6 +1389,14 @@ const resources = {
         "openExternal": "በውጫዊ አሳሽ ውስጥ ክፈት",
         "note": "ማስታወሻ: ውስብስብ ርዕሶችን በተሻለ ለመረዳት የእይታ የአእምሮ ካርታዎችን ይፍጠሩ።",
         "launch": "ጀምር"
+      },
+      "chatgpt": {
+        "title": "ChatGPT",
+        "description": "ማብራሪያዎችን ለማግኘት፣ ችግሮችን ለመፍታት እና አዳዲስ ፅንሰ-ሀሳቦችን በይነተገናኝ መንገድ ለመማር ከAI ጋር ይወያዩ።"
+      },
+      "gemini": {
+        "title": "Google Gemini",
+        "description": "ለምርምር፣ ለጽሁፍ እና ለፈጠራ ችግር መፍታት የGoogle የላቀ AI ረዳት።"
       },
       "exam": {
         "status": {
