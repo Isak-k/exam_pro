@@ -63,7 +63,10 @@ Teach like a supportive friend and make learning easy and enjoyable.`,
     id: "b2",
     title: "Explain Like I'm 5",
     description: "Get simple explanations for complex topics",
-    prompt: "Explain [TOPIC] to me like I'm 5 years old. Use simple words and examples.",
+    prompt: `First ask me: "Which language would you like me to explain in?"
+Wait for my answer and use that language for the explanation.
+
+Then explain [TOPIC] to me like I'm 5 years old. Use simple words and examples.`,
     level: "beginner",
     category: "Learning"
   },
@@ -71,7 +74,10 @@ Teach like a supportive friend and make learning easy and enjoyable.`,
     id: "b3",
     title: "Study Guide Creator",
     description: "Create a study guide for any subject",
-    prompt: "Create a comprehensive study guide for [SUBJECT/TOPIC]. Include key concepts, definitions, and practice questions.",
+    prompt: `First ask me: "Which language would you like the study guide in?"
+Wait for my answer and create the guide in that language.
+
+Create a comprehensive study guide for [SUBJECT/TOPIC]. Include key concepts, definitions, and practice questions.`,
     level: "beginner",
     category: "Study"
   },
@@ -79,7 +85,10 @@ Teach like a supportive friend and make learning easy and enjoyable.`,
     id: "b4",
     title: "Homework Helper",
     description: "Get help understanding homework problems",
-    prompt: "Help me understand this homework problem: [PASTE PROBLEM]. Explain the concept and guide me through the solution step by step.",
+    prompt: `First ask me: "Which language would you like me to help you in?"
+Wait for my answer and provide help in that language.
+
+Help me understand this homework problem: [PASTE PROBLEM]. Explain the concept and guide me through the solution step by step.`,
     level: "beginner",
     category: "Homework"
   },
@@ -87,7 +96,10 @@ Teach like a supportive friend and make learning easy and enjoyable.`,
     id: "b5",
     title: "Vocabulary Builder",
     description: "Learn new words and their usage",
-    prompt: "Teach me 10 important vocabulary words related to [SUBJECT]. For each word, provide: definition, example sentence, and a memory trick.",
+    prompt: `First ask me: "Which language would you like to learn vocabulary in?"
+Wait for my answer and teach in that language.
+
+Teach me 10 important vocabulary words related to [SUBJECT]. For each word, provide: definition, example sentence, and a memory trick.`,
     level: "beginner",
     category: "Language"
   },
@@ -127,7 +139,10 @@ I will type "Next" to continue.`,
     id: "i2",
     title: "Essay Outline Generator",
     description: "Create structured essay outlines",
-    prompt: "Create a detailed essay outline for the topic: [TOPIC]. Include: thesis statement, 3-5 main points with supporting arguments, and conclusion.",
+    prompt: `First ask me: "Which language would you like the essay outline in?"
+Wait for my answer and create the outline in that language.
+
+Create a detailed essay outline for the topic: [TOPIC]. Include: thesis statement, 3-5 main points with supporting arguments, and conclusion.`,
     level: "intermediate",
     category: "Writing"
   },
@@ -135,7 +150,10 @@ I will type "Next" to continue.`,
     id: "i3",
     title: "Concept Connector",
     description: "Link related concepts together",
-    prompt: "Explain how [CONCEPT A] relates to [CONCEPT B] in [SUBJECT]. Show the connections and provide real-world examples.",
+    prompt: `First ask me: "Which language would you like me to explain in?"
+Wait for my answer and explain in that language.
+
+Explain how [CONCEPT A] relates to [CONCEPT B] in [SUBJECT]. Show the connections and provide real-world examples.`,
     level: "intermediate",
     category: "Learning"
   },
@@ -143,7 +161,10 @@ I will type "Next" to continue.`,
     id: "i4",
     title: "Practice Test Creator",
     description: "Generate practice questions",
-    prompt: "Create a practice test for [SUBJECT/TOPIC] with 10 questions. Include: 5 multiple choice, 3 short answer, and 2 essay questions. Provide answer key.",
+    prompt: `First ask me: "Which language would you like the practice test in?"
+Wait for my answer and create the test in that language.
+
+Create a practice test for [SUBJECT/TOPIC] with 10 questions. Include: 5 multiple choice, 3 short answer, and 2 essay questions. Provide answer key.`,
     level: "intermediate",
     category: "Practice"
   },
@@ -151,7 +172,10 @@ I will type "Next" to continue.`,
     id: "i5",
     title: "Research Assistant",
     description: "Get help with research topics",
-    prompt: "I'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important questions to answer, 3) Suggested sources, 4) How to organize my findings.",
+    prompt: `First ask me: "Which language would you like me to assist you in?"
+Wait for my answer and provide assistance in that language.
+
+I'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important questions to answer, 3) Suggested sources, 4) How to organize my findings.`,
     level: "intermediate",
     category: "Research"
   },
@@ -192,7 +216,10 @@ I will type "Next" to continue learning.`,
     id: "a2",
     title: "Critical Analysis Guide",
     description: "Analyze texts and arguments critically",
-    prompt: "Analyze [TEXT/ARGUMENT] critically. Evaluate: 1) Main thesis and supporting arguments, 2) Strengths and weaknesses, 3) Logical fallacies, 4) Evidence quality, 5) Alternative perspectives, 6) Implications and conclusions.",
+    prompt: `First ask me: "Which language would you like the analysis in?"
+Wait for my answer and provide the analysis in that language.
+
+Analyze [TEXT/ARGUMENT] critically. Evaluate: 1) Main thesis and supporting arguments, 2) Strengths and weaknesses, 3) Logical fallacies, 4) Evidence quality, 5) Alternative perspectives, 6) Implications and conclusions.`,
     level: "advanced",
     category: "Analysis"
   },
@@ -200,7 +227,10 @@ I will type "Next" to continue learning.`,
     id: "a3",
     title: "Socratic Tutor",
     description: "Learn through guided questioning",
-    prompt: "Act as a Socratic tutor for [SUBJECT/TOPIC]. Instead of giving direct answers, guide me to discover the answer through thoughtful questions. Challenge my assumptions and help me think critically.",
+    prompt: `First ask me: "Which language would you like to learn in?"
+Wait for my answer and conduct the session in that language.
+
+Act as a Socratic tutor for [SUBJECT/TOPIC]. Instead of giving direct answers, guide me to discover the answer through thoughtful questions. Challenge my assumptions and help me think critically.`,
     level: "advanced",
     category: "Critical Thinking"
   },
@@ -208,7 +238,10 @@ I will type "Next" to continue learning.`,
     id: "a4",
     title: "Thesis Development",
     description: "Develop strong thesis statements",
-    prompt: "Help me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Narrowing the focus, 2) Formulating a clear argument, 3) Ensuring it's debatable, 4) Making it specific and supportable, 5) Refining the language.",
+    prompt: `First ask me: "Which language would you like to work in?"
+Wait for my answer and help me in that language.
+
+Help me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Narrowing the focus, 2) Formulating a clear argument, 3) Ensuring it's debatable, 4) Making it specific and supportable, 5) Refining the language.`,
     level: "advanced",
     category: "Writing"
   },
@@ -219,6 +252,9 @@ I will type "Next" to continue learning.`,
     title: "MCQ Generator (Admin Only)",
     description: "Generate exam questions with answers and explanations",
     prompt: `Act as an expert exam question generator.
+
+First ask me: "Which language would you like the questions in?"
+Wait for my answer and generate all questions in that language.
 
 I want to generate multiple-choice questions for exams.
 
@@ -236,7 +272,7 @@ Instructions:
 2. Each question must have 4 choices (A, B, C, D).
 3. Mark the correct answer using * at the end of the correct option.
 4. After each question, provide a short explanation of the correct answer.
-5. Use clear and simple English.
+5. Use clear and simple language appropriate for the selected language.
 6. Avoid repeating questions.
 7. Make questions suitable for students.
 
