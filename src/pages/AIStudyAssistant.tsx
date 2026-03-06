@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Brain, Network, ExternalLink, MessageSquare, Sparkles, Copy, Check, BookOpen, GraduationCap } from "lucide-react";
+import { ArrowLeft, Brain, Network, ExternalLink, MessageSquare, Sparkles, Copy, Check, BookOpen, GraduationCap, FileQuestion } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Browser } from "@capacitor/browser";
 import { Capacitor } from "@capacitor/core";
@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NOTEBOOK_LM_URL = "https://notebooklm.google.com/";
 const MIND_MAP_URL = "https://www.cogniguide.app/mind-maps/mind-map-ai-generator";
@@ -210,13 +211,56 @@ I will type "Next" to continue learning.`,
     prompt: "Help me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Narrowing the focus, 2) Formulating a clear argument, 3) Ensuring it's debatable, 4) Making it specific and supportable, 5) Refining the language.",
     level: "advanced",
     category: "Writing"
+  },
+  
+  // Admin Only Prompts
+  {
+    id: "admin1",
+    title: "MCQ Generator (Admin Only)",
+    description: "Generate exam questions with answers and explanations",
+    prompt: `Act as an expert exam question generator.
+
+I want to generate multiple-choice questions for exams.
+
+Topic:
+[Enter the topic here]
+
+Difficulty level:
+[Easy / Medium / Hard]
+
+Number of questions:
+[Enter number]
+
+Instructions:
+1. Generate high-quality multiple-choice questions based on the topic.
+2. Each question must have 4 choices (A, B, C, D).
+3. Mark the correct answer using * at the end of the correct option.
+4. After each question, provide a short explanation of the correct answer.
+5. Use clear and simple English.
+6. Avoid repeating questions.
+7. Make questions suitable for students.
+
+Format the output exactly like this:
+
+1. Question here?
+A. Choice
+B. Choice
+C. Correct answer *
+D. Choice
+
+Explanation: Write a short explanation of why the answer is correct.`,
+    level: "advanced",
+    category: "Admin Tools"
   }
 ];
 
 export default function AIStudyAssistant() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { role } = useAuth();
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+  
+  const isAdmin = role === "admin";
 
   const openURL = async (url: string, name: string) => {
     try {
@@ -450,17 +494,29 @@ export default function AIStudyAssistant() {
 
               {["beginner", "intermediate", "advanced"].map((level) => (
                 <TabsContent key={level} value={level} className="space-y-3 sm:space-y-4 mt-4">
-                  {PROMPTS.filter((p) => p.level === level).map((prompt) => (
+                  {PROMPTS.filter((p) => {
+                    // Filter by level
+                    if (p.level !== level) return false;
+                    // Hide admin-only prompts from students
+                    if (p.id.startsWith("admin") && !isAdmin) return false;
+                    return true;
+                  }).map((prompt) => (
                     <Card key={prompt.id} className="overflow-hidden hover:shadow-md transition-shadow">
                       <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-2">
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
                               <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getLevelColor(prompt.level)}`}>
                                 {getLevelIcon(prompt.level)}
                                 {prompt.level.charAt(0).toUpperCase() + prompt.level.slice(1)}
                               </span>
                               <span className="text-xs text-muted-foreground">{prompt.category}</span>
+                              {prompt.id.startsWith("admin") && (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                                  <FileQuestion className="h-3 w-3" />
+                                  Admin Only
+                                </span>
+                              )}
                             </div>
                             <h3 className="font-semibold text-base sm:text-lg mb-1">{prompt.title}</h3>
                             <p className="text-xs sm:text-sm text-muted-foreground">{prompt.description}</p>
