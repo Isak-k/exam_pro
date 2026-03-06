@@ -383,63 +383,90 @@ const resources = {
       },
       "aiAssistant": {
         "title": "AI Study Assistant",
-        "subtitle": "Choose your AI-powered study tool",
+        "subtitle": "AI tools and ready-to-use prompts for effective studying",
         "description": "Get AI-powered help with your studies using Google NotebookLM",
-        "notebookDescription": "Get AI-powered help with your studies. Upload documents, ask questions, and get instant answers.",
+        "notebookDescription": "Upload documents, ask questions, and get instant answers.",
         "loading": "Loading AI Study Assistant...",
         "error": "Unable to load AI Study Assistant",
         "errorDescription": "The AI Study Assistant could not be loaded. Please try again.",
         "openExternal": "Open in External Browser",
         "note": "Note: These tools open in your browser. You may need to sign in with your Google account for NotebookLM.",
         "launch": "Launch",
-        "promptLibrary": {
-          "title": "Prompt Library",
-          "subtitle": "Copy ready-made prompts for Beginners, Intermediate and Mastery levels.",
-          "beginner": "Beginner",
-          "intermediate": "Intermediate",
-          "mastery": "Mastery",
-          "admin": "Admin",
-          "prompts": {
-            "beg1": {
-              "title": "Explain It Simply",
-              "text": "Explain [topic] in simple terms with a real-world analogy, three key points, and a 3-question self-check quiz with answers."
-            },
-            "beg2": {
-              "title": "7‑Day Study Plan",
-              "text": "Create a 7-day study plan for [subject]. Each day: 1 goal, 2 resources, 20‑min practice task, and a short recap question."
-            },
-            "beg3": {
-              "title": "Beginner: Step‑by‑Step Tutor (Full Prompt)",
-              "text": "🟢 Beginner Level Prompt:\nAct as a friendly teacher and study partner.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and then continue the lesson using that language.\n\nAfter that, ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. First give a short and simple summary of what I am going to learn.\n2. After the summary, ask me to type \"Next\" to start Step 1.\n3. Break the topic into small steps or subtopics.\n4. Start with Step 1 only.\n5. Give a clear and simple explanation.\n6. Use simple words and daily life examples.\n7. Provide at least 3 examples for the step.\n8. Give 5 multiple-choice questions (MCQs) to test understanding.\n9. Ask one short question where I explain the idea in my own words.\n10. End the step with a short summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue learning.\n\nTeach like a supportive friend and make learning easy and enjoyable."
-            },
-            "int1": {
-              "title": "Practice Problems With Steps",
-              "text": "Give 5 practice problems on [topic] from easy→hard. Show step-by-step solutions and common mistakes after I try each one."
-            },
-            "int2": {
-              "title": "Summarize + Check Understanding",
-              "text": "Summarize this text in bullet points, then ask me 10 varied questions (MCQ, short answer) and provide answer key with explanations."
-            },
-            "int3": {
-              "title": "Intermediate: Expert Tutor Guide (Full Prompt)",
-              "text": "🟡 Intermediate Level Prompt:\nAct as an expert tutor and guide.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of what I will learn.\n2. Ask me to type \"Next\" to begin Step 1.\n3. Divide the topic into logical steps.\n4. Start with Step 1 only.\n5. Provide a clear and structured explanation.\n6. Use simple language but include important technical ideas.\n7. Provide daily life examples.\n8. Give at least 3 examples.\n9. Provide 5 MCQs to test understanding.\n10. Ask one short explanation question.\n11. End with a short step summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue."
-            },
-            "mas1": {
-              "title": "Socratic Drill",
-              "text": "Act as a tutor. Ask me probing questions on [topic], escalating complexity. Only reveal hints when I ask. Give feedback on reasoning."
-            },
-            "mas2": {
-              "title": "Exam‑Style Set With Rubric",
-              "text": "Create 12 mixed questions for [course]: 6 MCQ, 4 short answer, 2 case studies. Include difficulty tags and a grading rubric with model answers."
-            },
-            "mas3": {
-              "title": "Mastery: Professor‑Level Mentor (Full Prompt)",
-              "text": "🔴 Advanced / Mastery Level Prompt:\nAct as an expert professor and mentor.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of the topic and what I will master.\n2. Ask me to type \"Next\" to start Step 1.\n3. Divide the topic into advanced modules or sections.\n4. Start with Step 1 only.\n5. Provide deep but clear explanations.\n6. Include both technical explanations and simple explanations.\n7. Provide daily life and real-world examples.\n8. Give at least 3 examples.\n9. Provide 5 challenging MCQs.\n10. Ask one conceptual question to test deeper understanding.\n11. Mention common mistakes students make.\n12. End the step with a short summary.\n\nAfter completing each step, stop and wait.\nI will type \"Next\" to continue learning."
-            },
-            "adminMcq": {
-              "title": "MCQ Generator Prompt (For Admins)",
-              "text": "🧠 MCQ Generator Prompt (For Admins)\nAct as an expert exam question generator.\n\nI want to generate multiple-choice questions for exams.\n\nTopic:\n[Enter the topic here]\n\nDifficulty level:\n[Easy / Medium / Hard]\n\nNumber of questions:\n[Enter number]\n\nInstructions:\n1. Generate high-quality multiple-choice questions based on the topic.\n2. Each question must have 4 choices (A, B, C, D).\n3. Mark the correct answer using * at the end of the correct option.\n4. After each question, provide a short explanation of the correct answer.\n5. Use clear and simple English.\n6. Avoid repeating questions.\n7. Make questions suitable for students.\n\nFormat the output exactly like this:\n\n1. Question here?\nA. Choice\nB. Choice\nC. Correct answer *\nD. Choice\n\nExplanation: Write a best and clear explanation of why the answer is correct."
-            }
+        "prompts": {
+          "b1": {
+            "title": "Friendly Teacher & Study Partner",
+            "description": "Step-by-step learning with examples and practice questions",
+            "prompt": "Act as a friendly teacher and study partner.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and then continue the lesson using that language.\n\nAfter that, ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. First give a short and simple summary of what I am going to learn.\n2. After the summary, ask me to type \"Next\" to start Step 1.\n3. Break the topic into small steps or subtopics.\n4. Start with Step 1 only.\n5. Give a clear and simple explanation.\n6. Use simple words and daily life examples.\n7. Provide at least 3 examples for the step.\n8. Give 5 multiple-choice questions (MCQs) to test understanding.\n9. Ask one short question where I explain the idea in my own words.\n10. End the step with a short summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue learning.\n\nTeach like a supportive friend and make learning easy and enjoyable."
+          },
+          "b2": {
+            "title": "Explain Like I'm 5",
+            "description": "Get simple explanations for complex topics",
+            "prompt": "First ask me: \"Which language would you like me to explain in?\"\nWait for my answer and use that language for the explanation.\n\nThen explain [TOPIC] to me like I'm 5 years old. Use simple words and examples."
+          },
+          "b3": {
+            "title": "Study Guide Creator",
+            "description": "Create a study guide for any subject",
+            "prompt": "First ask me: \"Which language would you like the study guide in?\"\nWait for my answer and create the guide in that language.\n\nCreate a comprehensive study guide for [SUBJECT/TOPIC]. Include key concepts, definitions, and practice questions."
+          },
+          "b4": {
+            "title": "Homework Helper",
+            "description": "Get help understanding homework problems",
+            "prompt": "First ask me: \"Which language would you like me to help you in?\"\nWait for my answer and provide help in that language.\n\nHelp me understand this homework problem: [PASTE PROBLEM]. Explain the concept and guide me through the solution step by step."
+          },
+          "b5": {
+            "title": "Vocabulary Builder",
+            "description": "Learn new words and their usage",
+            "prompt": "First ask me: \"Which language would you like to learn vocabulary in?\"\nWait for my answer and teach in that language.\n\nTeach me 10 important vocabulary words related to [SUBJECT]. For each word, provide: definition, example sentence, and a memory trick."
+          },
+          "i1": {
+            "title": "Expert Tutor & Guide",
+            "description": "Structured learning with technical concepts and practice",
+            "prompt": "Act as an expert tutor and guide.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of what I will learn.\n2. Ask me to type \"Next\" to begin Step 1.\n3. Divide the topic into logical steps.\n4. Start with Step 1 only.\n5. Provide a clear and structured explanation.\n6. Use simple language but include important technical ideas.\n7. Provide daily life examples.\n8. Give at least 3 examples.\n9. Provide 5 MCQs to test understanding.\n10. Ask one short explanation question.\n11. End with a short step summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue."
+          },
+          "i2": {
+            "title": "Essay Outline Generator",
+            "description": "Create structured essay outlines",
+            "prompt": "First ask me: \"Which language would you like the essay outline in?\"\nWait for my answer and create the outline in that language.\n\nCreate a detailed essay outline for the topic: [TOPIC]. Include: thesis statement, 3-5 main points with supporting arguments, and conclusion."
+          },
+          "i3": {
+            "title": "Concept Connector",
+            "description": "Link related concepts together",
+            "prompt": "First ask me: \"Which language would you like me to explain in?\"\nWait for my answer and explain in that language.\n\nExplain how [CONCEPT A] relates to [CONCEPT B] in [SUBJECT]. Show the connections and provide real-world examples."
+          },
+          "i4": {
+            "title": "Practice Test Creator",
+            "description": "Generate practice questions",
+            "prompt": "First ask me: \"Which language would you like the practice test in?\"\nWait for my answer and create the test in that language.\n\nCreate a practice test for [SUBJECT/TOPIC] with 10 questions. Include: 5 multiple choice, 3 short answer, and 2 essay questions. Provide answer key."
+          },
+          "i5": {
+            "title": "Research Assistant",
+            "description": "Get help with research topics",
+            "prompt": "First ask me: \"Which language would you like me to assist you in?\"\nWait for my answer and provide assistance in that language.\n\nI'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important questions to answer, 3) Suggested sources, 4) How to organize my findings."
+          },
+          "a1": {
+            "title": "Expert Professor & Mentor",
+            "description": "Deep mastery-level learning with advanced concepts",
+            "prompt": "Act as an expert professor and mentor.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of the topic and what I will master.\n2. Ask me to type \"Next\" to start Step 1.\n3. Divide the topic into advanced modules or sections.\n4. Start with Step 1 only.\n5. Provide deep but clear explanations.\n6. Include both technical explanations and simple explanations.\n7. Provide daily life and real-world examples.\n8. Give at least 3 examples.\n9. Provide 5 challenging MCQs.\n10. Ask one conceptual question to test deeper understanding.\n11. Mention common mistakes students make.\n12. End the step with a short summary.\n\nAfter completing each step, stop and wait.\nI will type \"Next\" to continue learning."
+          },
+          "a2": {
+            "title": "Critical Analysis Guide",
+            "description": "Analyze texts and arguments critically",
+            "prompt": "First ask me: \"Which language would you like the analysis in?\"\nWait for my answer and provide the analysis in that language.\n\nAnalyze [TEXT/ARGUMENT] critically. Evaluate: 1) Main thesis and supporting arguments, 2) Strengths and weaknesses, 3) Logical fallacies, 4) Evidence quality, 5) Alternative perspectives, 6) Implications and conclusions."
+          },
+          "a3": {
+            "title": "Socratic Tutor",
+            "description": "Learn through guided questioning",
+            "prompt": "First ask me: \"Which language would you like to learn in?\"\nWait for my answer and conduct the session in that language.\n\nAct as a Socratic tutor for [SUBJECT/TOPIC]. Instead of giving direct answers, guide me to discover the answer through thoughtful questions. Challenge my assumptions and help me think critically."
+          },
+          "a4": {
+            "title": "Thesis Development",
+            "description": "Develop strong thesis statements",
+            "prompt": "First ask me: \"Which language would you like to work in?\"\nWait for my answer and help me in that language.\n\nHelp me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Narrowing the focus, 2) Formulating a clear argument, 3) Ensuring it's debatable, 4) Making it specific and supportable, 5) Refining the language."
+          },
+          "admin1": {
+            "title": "MCQ Generator (Admin Only)",
+            "description": "Generate exam questions with answers and explanations",
+            "prompt": "Act as an expert exam question generator.\n\nFirst ask me: \"Which language would you like the questions in?\"\nWait for my answer and generate all questions in that language.\n\nI want to generate multiple-choice questions for exams.\n\nTopic:\n[Enter the topic here]\n\nDifficulty level:\n[Easy / Medium / Hard]\n\nNumber of questions:\n[Enter number]\n\nInstructions:\n1. Generate high-quality multiple-choice questions based on the topic.\n2. Each question must have 4 choices (A, B, C, D).\n3. Mark the correct answer using * at the end of the correct option.\n4. After each question, provide a short explanation of the correct answer.\n5. Use clear and simple language appropriate for the selected language.\n6. Avoid repeating questions.\n7. Make questions suitable for students.\n\nFormat the output exactly like this:\n\n1. Question here?\nA. Choice\nB. Choice\nC. Correct answer *\nD. Choice\n\nExplanation: Write a short explanation of why the answer is correct."
           }
         }
       },

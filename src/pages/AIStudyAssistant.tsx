@@ -19,9 +19,9 @@ const GEMINI_URL = "https://gemini.google.com";
 
 interface Prompt {
   id: string;
-  title: string;
-  description: string;
-  prompt: string;
+  titleKey: string;
+  descriptionKey: string;
+  promptKey: string;
   level: "beginner" | "intermediate" | "advanced";
   category: string;
 }
@@ -30,76 +30,41 @@ const PROMPTS: Prompt[] = [
   // Beginner Prompts
   {
     id: "b1",
-    title: "Friendly Teacher & Study Partner",
-    description: "Step-by-step learning with examples and practice questions",
-    prompt: `Act as a friendly teacher and study partner.
-
-First ask me: "Which language would you like to study in?"
-Wait for my answer and then continue the lesson using that language.
-
-After that, ask me for the topic or the file I want to study:
-[User enters topic or uploads file]
-
-Instructions for teaching:
-1. First give a short and simple summary of what I am going to learn.
-2. After the summary, ask me to type "Next" to start Step 1.
-3. Break the topic into small steps or subtopics.
-4. Start with Step 1 only.
-5. Give a clear and simple explanation.
-6. Use simple words and daily life examples.
-7. Provide at least 3 examples for the step.
-8. Give 5 multiple-choice questions (MCQs) to test understanding.
-9. Ask one short question where I explain the idea in my own words.
-10. End the step with a short summary.
-
-After completing the step, stop and wait for me.
-I will type "Next" to continue learning.
-
-Teach like a supportive friend and make learning easy and enjoyable.`,
+    titleKey: "aiAssistant.prompts.b1.title",
+    descriptionKey: "aiAssistant.prompts.b1.description",
+    promptKey: "aiAssistant.prompts.b1.prompt",
     level: "beginner",
     category: "Interactive Learning"
   },
   {
     id: "b2",
-    title: "Explain Like I'm 5",
-    description: "Get simple explanations for complex topics",
-    prompt: `First ask me: "Which language would you like me to explain in?"
-Wait for my answer and use that language for the explanation.
-
-Then explain [TOPIC] to me like I'm 5 years old. Use simple words and examples.`,
+    titleKey: "aiAssistant.prompts.b2.title",
+    descriptionKey: "aiAssistant.prompts.b2.description",
+    promptKey: "aiAssistant.prompts.b2.prompt",
     level: "beginner",
     category: "Learning"
   },
   {
     id: "b3",
-    title: "Study Guide Creator",
-    description: "Create a study guide for any subject",
-    prompt: `First ask me: "Which language would you like the study guide in?"
-Wait for my answer and create the guide in that language.
-
-Create a comprehensive study guide for [SUBJECT/TOPIC]. Include key concepts, definitions, and practice questions.`,
+    titleKey: "aiAssistant.prompts.b3.title",
+    descriptionKey: "aiAssistant.prompts.b3.description",
+    promptKey: "aiAssistant.prompts.b3.prompt",
     level: "beginner",
     category: "Study"
   },
   {
     id: "b4",
-    title: "Homework Helper",
-    description: "Get help understanding homework problems",
-    prompt: `First ask me: "Which language would you like me to help you in?"
-Wait for my answer and provide help in that language.
-
-Help me understand this homework problem: [PASTE PROBLEM]. Explain the concept and guide me through the solution step by step.`,
+    titleKey: "aiAssistant.prompts.b4.title",
+    descriptionKey: "aiAssistant.prompts.b4.description",
+    promptKey: "aiAssistant.prompts.b4.prompt",
     level: "beginner",
     category: "Homework"
   },
   {
     id: "b5",
-    title: "Vocabulary Builder",
-    description: "Learn new words and their usage",
-    prompt: `First ask me: "Which language would you like to learn vocabulary in?"
-Wait for my answer and teach in that language.
-
-Teach me 10 important vocabulary words related to [SUBJECT]. For each word, provide: definition, example sentence, and a memory trick.`,
+    titleKey: "aiAssistant.prompts.b5.title",
+    descriptionKey: "aiAssistant.prompts.b5.description",
+    promptKey: "aiAssistant.prompts.b5.prompt",
     level: "beginner",
     category: "Language"
   },
@@ -107,75 +72,41 @@ Teach me 10 important vocabulary words related to [SUBJECT]. For each word, prov
   // Intermediate Prompts
   {
     id: "i1",
-    title: "Expert Tutor & Guide",
-    description: "Structured learning with technical concepts and practice",
-    prompt: `Act as an expert tutor and guide.
-
-First ask me: "Which language would you like to study in?"
-Wait for my answer and continue the lesson using that language.
-
-Then ask me for the topic or the file I want to study:
-[User enters topic or uploads file]
-
-Instructions for teaching:
-1. Give a short overview of what I will learn.
-2. Ask me to type "Next" to begin Step 1.
-3. Divide the topic into logical steps.
-4. Start with Step 1 only.
-5. Provide a clear and structured explanation.
-6. Use simple language but include important technical ideas.
-7. Provide daily life examples.
-8. Give at least 3 examples.
-9. Provide 5 MCQs to test understanding.
-10. Ask one short explanation question.
-11. End with a short step summary.
-
-After completing the step, stop and wait for me.
-I will type "Next" to continue.`,
+    titleKey: "aiAssistant.prompts.i1.title",
+    descriptionKey: "aiAssistant.prompts.i1.description",
+    promptKey: "aiAssistant.prompts.i1.prompt",
     level: "intermediate",
     category: "Interactive Learning"
   },
   {
     id: "i2",
-    title: "Essay Outline Generator",
-    description: "Create structured essay outlines",
-    prompt: `First ask me: "Which language would you like the essay outline in?"
-Wait for my answer and create the outline in that language.
-
-Create a detailed essay outline for the topic: [TOPIC]. Include: thesis statement, 3-5 main points with supporting arguments, and conclusion.`,
+    titleKey: "aiAssistant.prompts.i2.title",
+    descriptionKey: "aiAssistant.prompts.i2.description",
+    promptKey: "aiAssistant.prompts.i2.prompt",
     level: "intermediate",
     category: "Writing"
   },
   {
     id: "i3",
-    title: "Concept Connector",
-    description: "Link related concepts together",
-    prompt: `First ask me: "Which language would you like me to explain in?"
-Wait for my answer and explain in that language.
-
-Explain how [CONCEPT A] relates to [CONCEPT B] in [SUBJECT]. Show the connections and provide real-world examples.`,
+    titleKey: "aiAssistant.prompts.i3.title",
+    descriptionKey: "aiAssistant.prompts.i3.description",
+    promptKey: "aiAssistant.prompts.i3.prompt",
     level: "intermediate",
     category: "Learning"
   },
   {
     id: "i4",
-    title: "Practice Test Creator",
-    description: "Generate practice questions",
-    prompt: `First ask me: "Which language would you like the practice test in?"
-Wait for my answer and create the test in that language.
-
-Create a practice test for [SUBJECT/TOPIC] with 10 questions. Include: 5 multiple choice, 3 short answer, and 2 essay questions. Provide answer key.`,
+    titleKey: "aiAssistant.prompts.i4.title",
+    descriptionKey: "aiAssistant.prompts.i4.description",
+    promptKey: "aiAssistant.prompts.i4.prompt",
     level: "intermediate",
     category: "Practice"
   },
   {
     id: "i5",
-    title: "Research Assistant",
-    description: "Get help with research topics",
-    prompt: `First ask me: "Which language would you like me to assist you in?"
-Wait for my answer and provide assistance in that language.
-
-I'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important questions to answer, 3) Suggested sources, 4) How to organize my findings.`,
+    titleKey: "aiAssistant.prompts.i5.title",
+    descriptionKey: "aiAssistant.prompts.i5.description",
+    promptKey: "aiAssistant.prompts.i5.prompt",
     level: "intermediate",
     category: "Research"
   },
@@ -183,65 +114,33 @@ I'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important question
   // Advanced Prompts
   {
     id: "a1",
-    title: "Expert Professor & Mentor",
-    description: "Deep mastery-level learning with advanced concepts",
-    prompt: `Act as an expert professor and mentor.
-
-First ask me: "Which language would you like to study in?"
-Wait for my answer and continue the lesson using that language.
-
-Then ask me for the topic or the file I want to study:
-[User enters topic or uploads file]
-
-Instructions for teaching:
-1. Give a short overview of the topic and what I will master.
-2. Ask me to type "Next" to start Step 1.
-3. Divide the topic into advanced modules or sections.
-4. Start with Step 1 only.
-5. Provide deep but clear explanations.
-6. Include both technical explanations and simple explanations.
-7. Provide daily life and real-world examples.
-8. Give at least 3 examples.
-9. Provide 5 challenging MCQs.
-10. Ask one conceptual question to test deeper understanding.
-11. Mention common mistakes students make.
-12. End the step with a short summary.
-
-After completing each step, stop and wait.
-I will type "Next" to continue learning.`,
+    titleKey: "aiAssistant.prompts.a1.title",
+    descriptionKey: "aiAssistant.prompts.a1.description",
+    promptKey: "aiAssistant.prompts.a1.prompt",
     level: "advanced",
     category: "Interactive Learning"
   },
   {
     id: "a2",
-    title: "Critical Analysis Guide",
-    description: "Analyze texts and arguments critically",
-    prompt: `First ask me: "Which language would you like the analysis in?"
-Wait for my answer and provide the analysis in that language.
-
-Analyze [TEXT/ARGUMENT] critically. Evaluate: 1) Main thesis and supporting arguments, 2) Strengths and weaknesses, 3) Logical fallacies, 4) Evidence quality, 5) Alternative perspectives, 6) Implications and conclusions.`,
+    titleKey: "aiAssistant.prompts.a2.title",
+    descriptionKey: "aiAssistant.prompts.a2.description",
+    promptKey: "aiAssistant.prompts.a2.prompt",
     level: "advanced",
     category: "Analysis"
   },
   {
     id: "a3",
-    title: "Socratic Tutor",
-    description: "Learn through guided questioning",
-    prompt: `First ask me: "Which language would you like to learn in?"
-Wait for my answer and conduct the session in that language.
-
-Act as a Socratic tutor for [SUBJECT/TOPIC]. Instead of giving direct answers, guide me to discover the answer through thoughtful questions. Challenge my assumptions and help me think critically.`,
+    titleKey: "aiAssistant.prompts.a3.title",
+    descriptionKey: "aiAssistant.prompts.a3.description",
+    promptKey: "aiAssistant.prompts.a3.prompt",
     level: "advanced",
     category: "Critical Thinking"
   },
   {
     id: "a4",
-    title: "Thesis Development",
-    description: "Develop strong thesis statements",
-    prompt: `First ask me: "Which language would you like to work in?"
-Wait for my answer and help me in that language.
-
-Help me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Narrowing the focus, 2) Formulating a clear argument, 3) Ensuring it's debatable, 4) Making it specific and supportable, 5) Refining the language.`,
+    titleKey: "aiAssistant.prompts.a4.title",
+    descriptionKey: "aiAssistant.prompts.a4.description",
+    promptKey: "aiAssistant.prompts.a4.prompt",
     level: "advanced",
     category: "Writing"
   },
@@ -249,47 +148,13 @@ Help me develop a strong thesis for my paper on [TOPIC]. Guide me through: 1) Na
   // Admin Only Prompts
   {
     id: "admin1",
-    title: "MCQ Generator (Admin Only)",
-    description: "Generate exam questions with answers and explanations",
-    prompt: `Act as an expert exam question generator.
-
-First ask me: "Which language would you like the questions in?"
-Wait for my answer and generate all questions in that language.
-
-I want to generate multiple-choice questions for exams.
-
-Topic:
-[Enter the topic here]
-
-Difficulty level:
-[Easy / Medium / Hard]
-
-Number of questions:
-[Enter number]
-
-Instructions:
-1. Generate high-quality multiple-choice questions based on the topic.
-2. Each question must have 4 choices (A, B, C, D).
-3. Mark the correct answer using * at the end of the correct option.
-4. After each question, provide a short explanation of the correct answer.
-5. Use clear and simple language appropriate for the selected language.
-6. Avoid repeating questions.
-7. Make questions suitable for students.
-
-Format the output exactly like this:
-
-1. Question here?
-A. Choice
-B. Choice
-C. Correct answer *
-D. Choice
-
-Explanation: Write a short explanation of why the answer is correct.`,
+    titleKey: "aiAssistant.prompts.admin1.title",
+    descriptionKey: "aiAssistant.prompts.admin1.description",
+    promptKey: "aiAssistant.prompts.admin1.prompt",
     level: "advanced",
     category: "Admin Tools"
   }
 ];
-
 export default function AIStudyAssistant() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -323,8 +188,9 @@ export default function AIStudyAssistant() {
     }
   };
 
-  const copyPrompt = (prompt: string, id: string) => {
-    navigator.clipboard.writeText(prompt);
+  const copyPrompt = (promptKey: string, id: string) => {
+    const promptText = t(promptKey);
+    navigator.clipboard.writeText(promptText);
     setCopiedPrompt(id);
     toast.success("Prompt copied!", {
       description: "Paste it into any AI tool to use it.",
@@ -554,13 +420,13 @@ export default function AIStudyAssistant() {
                                 </span>
                               )}
                             </div>
-                            <h3 className="font-semibold text-base sm:text-lg mb-1">{prompt.title}</h3>
-                            <p className="text-xs sm:text-sm text-muted-foreground">{prompt.description}</p>
+                            <h3 className="font-semibold text-base sm:text-lg mb-1">{t(prompt.titleKey)}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground">{t(prompt.descriptionKey)}</p>
                           </div>
                           <Button
                             size="sm"
                             variant={copiedPrompt === prompt.id ? "default" : "outline"}
-                            onClick={() => copyPrompt(prompt.prompt, prompt.id)}
+                            onClick={() => copyPrompt(prompt.promptKey, prompt.id)}
                             className="shrink-0"
                           >
                             {copiedPrompt === prompt.id ? (
@@ -579,7 +445,7 @@ export default function AIStudyAssistant() {
                         <ScrollArea className="w-full">
                           <div className="bg-muted/50 rounded-lg p-3 sm:p-4">
                             <pre className="text-xs sm:text-sm whitespace-pre-wrap font-mono break-words">
-                              {prompt.prompt}
+                              {t(prompt.promptKey)}
                             </pre>
                           </div>
                         </ScrollArea>
