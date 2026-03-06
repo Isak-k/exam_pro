@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Amharic Translations</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Translation Test</h1>
+    <p>Open browser console (F12) and check if Amharic translations are loaded</p>
+    
+    <script type="module">
+        import i18n from './src/lib/i18n.ts';
+        
+        // Wait for i18n to initialize
+        setTimeout(() => {
+            console.log('=== i18n Configuration ===');
+            console.log('Current language:', i18n.language);
+            console.log('Available languages:', Object.keys(i18n.options.resources));
+            
+            // Test English
+            console.log('\n=== English (en) ===');
+            console.log('AI Assistant Title:', i18n.t('aiAssistant.title', { lng: 'en' }));
+            console.log('B1 Prompt:', i18n.t('aiAssistant.prompts.b1.prompt', { lng: 'en' }).substring(0, 100) + '...');
+            
+            // Test Amharic
+            console.log('\n=== Amharic (am) ===');
+            console.log('AI Assistant Title:', i18n.t('aiAssistant.title', { lng: 'am' }));
+            console.log('B1 Title:', i18n.t('aiAssistant.prompts.b1.title', { lng: 'am' }));
+            console.log('B1 Prompt:', i18n.t('aiAssistant.prompts.b1.prompt', { lng: 'am' }).substring(0, 100) + '...');
+            
+            // Check if Amharic resources exist
+            const amResources = i18n.options.resources.am;
+            console.log('\n=== Amharic Resources Check ===');
+            console.log('Amharic resources exist:', !!amResources);
+            console.log('aiAssistant section exists:', !!amResources?.translation?.aiAssistant);
+            console.log('prompts section exists:', !!amResources?.translation?.aiAssistant?.prompts);
+            console.log('b1 prompt exists:', !!amResources?.translation?.aiAssistant?.prompts?.b1);
+            
+            // Try changing language
+            console.log('\n=== Changing Language to Amharic ===');
+            i18n.changeLanguage('am').then(() => {
+                console.log('Language changed to:', i18n.language);
+                console.log('AI Assistant Title after change:', i18n.t('aiAssistant.title'));
+                console.log('B1 Title after change:', i18n.t('aiAssistant.prompts.b1.title'));
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
