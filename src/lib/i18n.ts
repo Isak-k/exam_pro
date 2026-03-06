@@ -1616,8 +1616,6 @@ const resources = {
           "min": "ደቂቃ",
           "questions": "ጥያቄዎች",
           "attempts": "ሙከራዎች",
-          "startsIn": "በ{{time}} ደቂቃ ውስጥ ይጀምራል",
-          "starts": "{{time}} ይጀምራል",
           "endsIn": "በ{{time}} ደቂቃ ውስጥ ያበቃል",
           "openNow": "አሁን ክፍት ነው"
         },
