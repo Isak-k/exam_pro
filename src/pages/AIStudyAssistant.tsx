@@ -29,6 +29,37 @@ const PROMPTS: Prompt[] = [
   // Beginner Prompts
   {
     id: "b1",
+    title: "Friendly Teacher & Study Partner",
+    description: "Step-by-step learning with examples and practice questions",
+    prompt: `Act as a friendly teacher and study partner.
+
+First ask me: "Which language would you like to study in?"
+Wait for my answer and then continue the lesson using that language.
+
+After that, ask me for the topic or the file I want to study:
+[User enters topic or uploads file]
+
+Instructions for teaching:
+1. First give a short and simple summary of what I am going to learn.
+2. After the summary, ask me to type "Next" to start Step 1.
+3. Break the topic into small steps or subtopics.
+4. Start with Step 1 only.
+5. Give a clear and simple explanation.
+6. Use simple words and daily life examples.
+7. Provide at least 3 examples for the step.
+8. Give 5 multiple-choice questions (MCQs) to test understanding.
+9. Ask one short question where I explain the idea in my own words.
+10. End the step with a short summary.
+
+After completing the step, stop and wait for me.
+I will type "Next" to continue learning.
+
+Teach like a supportive friend and make learning easy and enjoyable.`,
+    level: "beginner",
+    category: "Interactive Learning"
+  },
+  {
+    id: "b2",
     title: "Explain Like I'm 5",
     description: "Get simple explanations for complex topics",
     prompt: "Explain [TOPIC] to me like I'm 5 years old. Use simple words and examples.",
@@ -36,7 +67,7 @@ const PROMPTS: Prompt[] = [
     category: "Learning"
   },
   {
-    id: "b2",
+    id: "b3",
     title: "Study Guide Creator",
     description: "Create a study guide for any subject",
     prompt: "Create a comprehensive study guide for [SUBJECT/TOPIC]. Include key concepts, definitions, and practice questions.",
@@ -44,7 +75,7 @@ const PROMPTS: Prompt[] = [
     category: "Study"
   },
   {
-    id: "b3",
+    id: "b4",
     title: "Homework Helper",
     description: "Get help understanding homework problems",
     prompt: "Help me understand this homework problem: [PASTE PROBLEM]. Explain the concept and guide me through the solution step by step.",
@@ -52,7 +83,7 @@ const PROMPTS: Prompt[] = [
     category: "Homework"
   },
   {
-    id: "b4",
+    id: "b5",
     title: "Vocabulary Builder",
     description: "Learn new words and their usage",
     prompt: "Teach me 10 important vocabulary words related to [SUBJECT]. For each word, provide: definition, example sentence, and a memory trick.",
@@ -63,6 +94,36 @@ const PROMPTS: Prompt[] = [
   // Intermediate Prompts
   {
     id: "i1",
+    title: "Expert Tutor & Guide",
+    description: "Structured learning with technical concepts and practice",
+    prompt: `Act as an expert tutor and guide.
+
+First ask me: "Which language would you like to study in?"
+Wait for my answer and continue the lesson using that language.
+
+Then ask me for the topic or the file I want to study:
+[User enters topic or uploads file]
+
+Instructions for teaching:
+1. Give a short overview of what I will learn.
+2. Ask me to type "Next" to begin Step 1.
+3. Divide the topic into logical steps.
+4. Start with Step 1 only.
+5. Provide a clear and structured explanation.
+6. Use simple language but include important technical ideas.
+7. Provide daily life examples.
+8. Give at least 3 examples.
+9. Provide 5 MCQs to test understanding.
+10. Ask one short explanation question.
+11. End with a short step summary.
+
+After completing the step, stop and wait for me.
+I will type "Next" to continue.`,
+    level: "intermediate",
+    category: "Interactive Learning"
+  },
+  {
+    id: "i2",
     title: "Essay Outline Generator",
     description: "Create structured essay outlines",
     prompt: "Create a detailed essay outline for the topic: [TOPIC]. Include: thesis statement, 3-5 main points with supporting arguments, and conclusion.",
@@ -70,7 +131,7 @@ const PROMPTS: Prompt[] = [
     category: "Writing"
   },
   {
-    id: "i2",
+    id: "i3",
     title: "Concept Connector",
     description: "Link related concepts together",
     prompt: "Explain how [CONCEPT A] relates to [CONCEPT B] in [SUBJECT]. Show the connections and provide real-world examples.",
@@ -78,7 +139,7 @@ const PROMPTS: Prompt[] = [
     category: "Learning"
   },
   {
-    id: "i3",
+    id: "i4",
     title: "Practice Test Creator",
     description: "Generate practice questions",
     prompt: "Create a practice test for [SUBJECT/TOPIC] with 10 questions. Include: 5 multiple choice, 3 short answer, and 2 essay questions. Provide answer key.",
@@ -86,7 +147,7 @@ const PROMPTS: Prompt[] = [
     category: "Practice"
   },
   {
-    id: "i4",
+    id: "i5",
     title: "Research Assistant",
     description: "Get help with research topics",
     prompt: "I'm researching [TOPIC]. Provide: 1) Key areas to explore, 2) Important questions to answer, 3) Suggested sources, 4) How to organize my findings.",
@@ -97,8 +158,8 @@ const PROMPTS: Prompt[] = [
   // Advanced Prompts
   {
     id: "a1",
-    title: "Professor-Level Mentor",
-    description: "Deep academic guidance",
+    title: "Expert Professor & Mentor",
+    description: "Deep mastery-level learning with advanced concepts",
     prompt: `Act as an expert professor and mentor.
 
 First ask me: "Which language would you like to study in?"
@@ -107,17 +168,24 @@ Wait for my answer and continue the lesson using that language.
 Then ask me for the topic or the file I want to study:
 [User enters topic or uploads file]
 
-After I provide the topic/file:
-1. Analyze the content deeply
-2. Create a structured learning path
-3. Explain complex concepts with examples
-4. Ask me questions to check understanding
-5. Provide additional resources
-6. Give me practice exercises
+Instructions for teaching:
+1. Give a short overview of the topic and what I will master.
+2. Ask me to type "Next" to start Step 1.
+3. Divide the topic into advanced modules or sections.
+4. Start with Step 1 only.
+5. Provide deep but clear explanations.
+6. Include both technical explanations and simple explanations.
+7. Provide daily life and real-world examples.
+8. Give at least 3 examples.
+9. Provide 5 challenging MCQs.
+10. Ask one conceptual question to test deeper understanding.
+11. Mention common mistakes students make.
+12. End the step with a short summary.
 
-Adapt your teaching style to my responses and pace.`,
+After completing each step, stop and wait.
+I will type "Next" to continue learning.`,
     level: "advanced",
-    category: "Mentoring"
+    category: "Interactive Learning"
   },
   {
     id: "a2",
