@@ -183,7 +183,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="/dashboard/ai-assistant" element={
-          <ProtectedRoute allowedRoles={["student"]}>
+          <ProtectedRoute allowedRoles={["student","admin"]}>
             <AIStudyAssistant />
           </ProtectedRoute>
         } />

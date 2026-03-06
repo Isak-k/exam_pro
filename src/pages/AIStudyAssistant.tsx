@@ -9,6 +9,7 @@ import { Capacitor } from "@capacitor/core";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NOTEBOOK_LM_URL = "https://notebooklm.google.com/";
 const MIND_MAP_URL = "https://www.cogniguide.app/mind-maps/mind-map-ai-generator";
@@ -19,6 +20,7 @@ export default function AIStudyAssistant() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+  const { role } = useAuth();
 
   const openURL = async (url: string, name: string) => {
     try {
@@ -51,128 +53,122 @@ export default function AIStudyAssistant() {
     {
       id: "beg-1",
       level: "beginner",
-      title: "Explain It Simply",
-      text:
-        "Explain [topic] in simple terms with a real-world analogy, three key points, and a 3-question self-check quiz with answers.",
+      title: t("aiAssistant.promptLibrary.prompts.beg1.title", "Explain It Simply"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.beg1.text",
+        "Explain [topic] in simple terms with a real-world analogy, three key points, and a 3-question self-check quiz with answers."
+      ),
     },
     {
       id: "beg-2",
       level: "beginner",
-      title: "7‑Day Study Plan",
-      text:
-        "Create a 7-day study plan for [subject]. Each day: 1 goal, 2 resources, 20‑min practice task, and a short recap question.",
+      title: t("aiAssistant.promptLibrary.prompts.beg2.title", "7‑Day Study Plan"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.beg2.text",
+        "Create a 7-day study plan for [subject]. Each day: 1 goal, 2 resources, 20‑min practice task, and a short recap question."
+      ),
     },
     {
       id: "beg-3",
       level: "beginner",
-      title: "Beginner: Step‑by‑Step Tutor (Full Prompt)",
-      text: `📚 AI Study Prompts
-Users copy/paste this prompt when they want very simple explanations.
-
-🟢 Beginner Level:
-Act as a friendly teacher and study partner.
-
-I want to study from the file I uploaded or from this topic:
-[User enters the topic here]
-
-Teach me step by step using very simple English.
-
-Instructions:
-1. First give me a short summary of what I am going to learn in this topic.
-2. After the summary, ask me to type "Next" to start Step 1.
-3. Break the topic into small steps or subtopics.
-4. Start with Step 1 only.
-5. Give a clear and simple explanation.
-6. Use daily life examples to make it easier to understand.
-7. Provide at least 3 examples for that step.
-8. Give 5 multiple-choice questions (MCQs) to test my understanding.
-
-After completing one step, stop and wait for me.
-I will type "Next" when I am ready to continue.
-
-Explain like a supportive friend and make learning easy and enjoyable.`,
+      title: t("aiAssistant.promptLibrary.prompts.beg3.title", "Beginner: Step‑by‑Step Tutor (Full Prompt)"),
+      text: t("aiAssistant.promptLibrary.prompts.beg3.text"),
     },
     {
       id: "int-1",
       level: "intermediate",
-      title: "Practice Problems With Steps",
-      text:
-        "Give 5 practice problems on [topic] from easy→hard. Show step-by-step solutions and common mistakes after I try each one.",
+      title: t("aiAssistant.promptLibrary.prompts.int1.title", "Practice Problems With Steps"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.int1.text",
+        "Give 5 practice problems on [topic] from easy→hard. Show step-by-step solutions and common mistakes after I try each one."
+      ),
     },
     {
       id: "int-2",
       level: "intermediate",
-      title: "Summarize + Check Understanding",
-      text:
-        "Summarize this text in bullet points, then ask me 10 varied questions (MCQ, short answer) and provide answer key with explanations.",
+      title: t("aiAssistant.promptLibrary.prompts.int2.title", "Summarize + Check Understanding"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.int2.text",
+        "Summarize this text in bullet points, then ask me 10 varied questions (MCQ, short answer) and provide answer key with explanations."
+      ),
     },
     {
       id: "int-3",
       level: "intermediate",
-      title: "Intermediate: Expert Tutor Guide (Full Prompt)",
-      text: `🟡 Intermediate Level:
-Act as an expert tutor and guide.
-
-I want to study from the file I uploaded or from this topic:
-[User enters the topic here]
-
-Teach the topic step by step with clear explanations.
-
-Instructions:
-1. First give a short summary of what I am going to learn.
-2. Ask me to type "Next" to start Step 1.
-3. Divide the topic into logical sections or steps.
-4. Start with Step 1 only.
-5. Provide a clear and structured explanation.
-6. Use simple English but include important technical ideas.
-7. Provide daily life examples to make the concept easier to understand.
-8. Give at least 3 examples for each step.
-9. Provide 5 multiple-choice questions (MCQs) to check my understanding.
-
-After completing each step, stop and wait.
-I will type "Next" to continue.`,
+      title: t("aiAssistant.promptLibrary.prompts.int3.title", "Intermediate: Expert Tutor Guide (Full Prompt)"),
+      text: t("aiAssistant.promptLibrary.prompts.int3.text"),
     },
     {
       id: "mas-1",
       level: "mastery",
-      title: "Socratic Drill",
-      text:
-        "Act as a tutor. Ask me probing questions on [topic], escalating complexity. Only reveal hints when I ask. Give feedback on reasoning.",
+      title: t("aiAssistant.promptLibrary.prompts.mas1.title", "Socratic Drill"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.mas1.text",
+        "Act as a tutor. Ask me probing questions on [topic], escalating complexity. Only reveal hints when I ask. Give feedback on reasoning."
+      ),
     },
     {
       id: "mas-2",
       level: "mastery",
-      title: "Exam‑Style Set With Rubric",
-      text:
-        "Create 12 mixed questions for [course]: 6 MCQ, 4 short answer, 2 case studies. Include difficulty tags and a grading rubric with model answers.",
+      title: t("aiAssistant.promptLibrary.prompts.mas2.title", "Exam‑Style Set With Rubric"),
+      text: t(
+        "aiAssistant.promptLibrary.prompts.mas2.text",
+        "Create 12 mixed questions for [course]: 6 MCQ, 4 short answer, 2 case studies. Include difficulty tags and a grading rubric with model answers."
+      ),
     },
     {
       id: "mas-3",
       level: "mastery",
-      title: "Mastery: Professor‑Level Mentor (Full Prompt)",
-      text: `🔴 Advanced / Mastery Level:
-Act as an expert professor and mentor.
+      title: t("aiAssistant.promptLibrary.prompts.mas3.title", "Mastery: Professor‑Level Mentor (Full Prompt)"),
+      text: t("aiAssistant.promptLibrary.prompts.mas3.text"),
+    },
+    ...(role === "admin"
+      ? [
+          {
+            id: "admin-mcq",
+            level: "admin",
+            title: t(
+              "aiAssistant.promptLibrary.prompts.adminMcq.title",
+              "MCQ Generator Prompt (For Admins)"
+            ),
+            text: t(
+              "aiAssistant.promptLibrary.prompts.adminMcq.text",
+              `🧠 MCQ Generator Prompt (For Admins)
+Act as an expert exam question generator.
 
-I want to master the topic from the file I uploaded or from this topic:
-[User enters the topic here]
+I want to generate multiple-choice questions for exams.
 
-Teach it step by step until I fully understand the topic.
+Topic:
+[Enter the topic here]
+
+Difficulty level:
+[Easy / Medium / Hard]
+
+Number of questions:
+[Enter number]
 
 Instructions:
-1. First give a short overview of the whole topic and what I will master.
-2. Then ask me to type "Next" to start Step 1.
-3. Divide the topic into advanced sections or modules.
-4. Start with Step 1 only.
-5. Provide a deep and clear explanation of the concept.
-6. Include both technical explanations and simple explanations.
-7. Give real-world and daily life examples to connect theory with practice.
-8. Provide at least 3 examples for each step.
-9. Give 5 challenging MCQs to test deeper understanding.
-10. Mention common mistakes students make.
+1. Generate high-quality multiple-choice questions based on the topic.
+2. Each question must have 4 choices (A, B, C, D).
+3. Mark the correct answer using * at the end of the correct option.
+4. After each question, provide a short explanation of the correct answer.
+5. Use clear and simple English.
+6. Avoid repeating questions.
+7. Make questions suitable for students.
 
-After finishing each step, stop and wait for me.
-I will type "Next" to continue learning.`,
-    },
+Format the output exactly like this:
+
+1. Question here?
+A. Choice
+B. Choice
+C. Correct answer *
+D. Choice
+
+Explanation: Write a best and clear explanation of why the answer is correct.`
+            ),
+          } as const,
+        ]
+      : []),
   ] as const;
 
   const handleCopy = async (text: string, id: string) => {
@@ -339,6 +335,11 @@ I will type "Next" to continue learning.`,
               <TabsTrigger value="mastery">
                 {t("aiAssistant.promptLibrary.mastery", "Mastery")}
               </TabsTrigger>
+              {role === "admin" && (
+                <TabsTrigger value="admin">
+                  {t("aiAssistant.promptLibrary.admin", "Admin")}
+                </TabsTrigger>
+              )}
             </TabsList>
             <TabsContent value="beginner" className="mt-4 space-y-3">
               {prompts
@@ -439,6 +440,41 @@ I will type "Next" to continue learning.`,
                   </div>
                 ))}
             </TabsContent>
+            {role === "admin" && (
+              <TabsContent value="admin" className="mt-4 space-y-3">
+                {prompts
+                  .filter((p) => p.level === "admin")
+                  .map((p) => (
+                    <div
+                      key={p.id}
+                      className="flex items-start justify-between rounded-lg border bg-card p-4"
+                    >
+                      <div className="pr-4">
+                        <p className="font-medium">{p.title}</p>
+                        <p className="mt-1 text-sm text-muted-foreground whitespace-pre-wrap">{p.text}</p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleCopy(p.text, p.id)}
+                        className="shrink-0"
+                      >
+                        {copiedPrompt === p.id ? (
+                          <>
+                            <Check className="mr-2 h-4 w-4" />
+                            {t("common.copied", "Copied")}
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="mr-2 h-4 w-4" />
+                            {t("common.copy", "Copy")}
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  ))}
+              </TabsContent>
+            )}
           </Tabs>
         </Card>
 

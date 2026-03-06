@@ -391,7 +391,57 @@ const resources = {
         "errorDescription": "The AI Study Assistant could not be loaded. Please try again.",
         "openExternal": "Open in External Browser",
         "note": "Note: These tools open in your browser. You may need to sign in with your Google account for NotebookLM.",
-        "launch": "Launch"
+        "launch": "Launch",
+        "promptLibrary": {
+          "title": "Prompt Library",
+          "subtitle": "Copy ready-made prompts for Beginners, Intermediate and Mastery levels.",
+          "beginner": "Beginner",
+          "intermediate": "Intermediate",
+          "mastery": "Mastery",
+          "admin": "Admin",
+          "prompts": {
+            "beg1": {
+              "title": "Explain It Simply",
+              "text": "Explain [topic] in simple terms with a real-world analogy, three key points, and a 3-question self-check quiz with answers."
+            },
+            "beg2": {
+              "title": "7‑Day Study Plan",
+              "text": "Create a 7-day study plan for [subject]. Each day: 1 goal, 2 resources, 20‑min practice task, and a short recap question."
+            },
+            "beg3": {
+              "title": "Beginner: Step‑by‑Step Tutor (Full Prompt)",
+              "text": "🟢 Beginner Level Prompt:\nAct as a friendly teacher and study partner.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and then continue the lesson using that language.\n\nAfter that, ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. First give a short and simple summary of what I am going to learn.\n2. After the summary, ask me to type \"Next\" to start Step 1.\n3. Break the topic into small steps or subtopics.\n4. Start with Step 1 only.\n5. Give a clear and simple explanation.\n6. Use simple words and daily life examples.\n7. Provide at least 3 examples for the step.\n8. Give 5 multiple-choice questions (MCQs) to test understanding.\n9. Ask one short question where I explain the idea in my own words.\n10. End the step with a short summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue learning.\n\nTeach like a supportive friend and make learning easy and enjoyable."
+            },
+            "int1": {
+              "title": "Practice Problems With Steps",
+              "text": "Give 5 practice problems on [topic] from easy→hard. Show step-by-step solutions and common mistakes after I try each one."
+            },
+            "int2": {
+              "title": "Summarize + Check Understanding",
+              "text": "Summarize this text in bullet points, then ask me 10 varied questions (MCQ, short answer) and provide answer key with explanations."
+            },
+            "int3": {
+              "title": "Intermediate: Expert Tutor Guide (Full Prompt)",
+              "text": "🟡 Intermediate Level Prompt:\nAct as an expert tutor and guide.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of what I will learn.\n2. Ask me to type \"Next\" to begin Step 1.\n3. Divide the topic into logical steps.\n4. Start with Step 1 only.\n5. Provide a clear and structured explanation.\n6. Use simple language but include important technical ideas.\n7. Provide daily life examples.\n8. Give at least 3 examples.\n9. Provide 5 MCQs to test understanding.\n10. Ask one short explanation question.\n11. End with a short step summary.\n\nAfter completing the step, stop and wait for me.\nI will type \"Next\" to continue."
+            },
+            "mas1": {
+              "title": "Socratic Drill",
+              "text": "Act as a tutor. Ask me probing questions on [topic], escalating complexity. Only reveal hints when I ask. Give feedback on reasoning."
+            },
+            "mas2": {
+              "title": "Exam‑Style Set With Rubric",
+              "text": "Create 12 mixed questions for [course]: 6 MCQ, 4 short answer, 2 case studies. Include difficulty tags and a grading rubric with model answers."
+            },
+            "mas3": {
+              "title": "Mastery: Professor‑Level Mentor (Full Prompt)",
+              "text": "🔴 Advanced / Mastery Level Prompt:\nAct as an expert professor and mentor.\n\nFirst ask me: \"Which language would you like to study in?\"\nWait for my answer and continue the lesson using that language.\n\nThen ask me for the topic or the file I want to study:\n[User enters topic or uploads file]\n\nInstructions for teaching:\n1. Give a short overview of the topic and what I will master.\n2. Ask me to type \"Next\" to start Step 1.\n3. Divide the topic into advanced modules or sections.\n4. Start with Step 1 only.\n5. Provide deep but clear explanations.\n6. Include both technical explanations and simple explanations.\n7. Provide daily life and real-world examples.\n8. Give at least 3 examples.\n9. Provide 5 challenging MCQs.\n10. Ask one conceptual question to test deeper understanding.\n11. Mention common mistakes students make.\n12. End the step with a short summary.\n\nAfter completing each step, stop and wait.\nI will type \"Next\" to continue learning."
+            },
+            "adminMcq": {
+              "title": "MCQ Generator Prompt (For Admins)",
+              "text": "🧠 MCQ Generator Prompt (For Admins)\nAct as an expert exam question generator.\n\nI want to generate multiple-choice questions for exams.\n\nTopic:\n[Enter the topic here]\n\nDifficulty level:\n[Easy / Medium / Hard]\n\nNumber of questions:\n[Enter number]\n\nInstructions:\n1. Generate high-quality multiple-choice questions based on the topic.\n2. Each question must have 4 choices (A, B, C, D).\n3. Mark the correct answer using * at the end of the correct option.\n4. After each question, provide a short explanation of the correct answer.\n5. Use clear and simple English.\n6. Avoid repeating questions.\n7. Make questions suitable for students.\n\nFormat the output exactly like this:\n\n1. Question here?\nA. Choice\nB. Choice\nC. Correct answer *\nD. Choice\n\nExplanation: Write a best and clear explanation of why the answer is correct."
+            }
+          }
+        }
       },
       "mindMap": {
         "title": "Mind Map Generator",
@@ -873,7 +923,52 @@ const resources = {
         "errorDescription": "Gargaaraan Barnoota AI fe'amuu hin dandeenye. Maaloo irra deebi'ii yaali.",
         "openExternal": "Geessituu Alaa Keessatti Bani",
         "note": "Yaadannoo: Meeshaaleen kun geessituu kee keessatti banamuu. NotebookLM fayyadamuuf akkaawuntii Google keetiin seenuu si barbaachisuu danda'a.",
-        "launch": "Jalqabi"
+        "launch": "Jalqabi",
+        "promptLibrary": {
+          "title": "Maqaa yaada (Prompt) Kuusaa",
+          "subtitle": "Beekamtii sadarkaa Beginner, Intermediate fi Mastery irratti qopheessine kan asii irraa guurrattu.",
+          "beginner": "Beginner",
+          "intermediate": "Intermediate",
+          "mastery": "Mastery",
+          "prompts": {
+            "beg1": {
+              "title": "Salphaa Ta'ee Naaf Ibsi",
+              "text": "[topic] hiika salphaan ibsi; fakkeenya jireenya guyyaa guyyaa, irra-caalaa 3 furmaata, fi gaaffilee too'annoo 3 deebii waliin kenni."
+            },
+            "beg2": {
+              "title": "Sagantaa Barnootaa 7‑Guyyaa",
+              "text": "Barnoota [subject]af sagantaa guyyoota 7 qophiisi. Guyyaa hunda: kaayyoo 1, madda 2, hojii 20‑daqiiqaa, fi gaaffii xiqqaa irra-ddeebi'i."
+            },
+            "beg3": {
+              "title": "Beginner: Tajaajila Tarkaanfii‑Tarkaanfiin (Guutuu)",
+              "text": "🟢 Yaada Beginner:\nAkka barsiisaaafi hiriyyaa barnootaa na tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Dursa gabaabbinaan waanan baradhu ibsi.\n2. Sana booda \"Next\" barreessi jedhee akka Tarkaanfii 1 jalqabu natti himi.\n3. Mata-duree gara tarkaanfii xiqqootti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi salphaa kenni.\n6. Jechoota salphaa fi fakkeenya jireenya guyyaa guyyaa fayyadami.\n7. Tarkaanfii sanaaf yoo xiqqaate fakkeenya 3 kenni.\n8. Hubannoo qorachuuf MCQ 5 kenni.\n9. Yaada sana akkaan jechoota kiyyaatiin ibsuuf gaaffii gabaabaa tokko na gaafadhu.\n10. Tarkaanfii sana xumuruun gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" yoo barreesse itti fufa.\n\nAkka hiriyyaa deeggartuu tokkootti na barsiisi; barachuun salphaa fi gammachiisaa haa ta'u."
+            },
+            "int1": {
+              "title": "Meeshaalee Shaakalaa Itti‑aananii",
+              "text": "[topic] irratti boriisa 5 salphaa→hadi keessatti kenni; erga nan yaale booda furmaata tarkaanfaan fi dogoggora wal‑fakkaataan agarsiisi."
+            },
+            "int2": {
+              "title": "Walmadaalaa + Hubannoo Qoruu",
+              "text": "Barruu kana maddi‑maddi gabaabsi; achumaan gaaffilee garaagaraa 10 (MCQ, deebii gabaabaa) gaafadhu; furmaata waliin ibsa kenni."
+            },
+            "int3": {
+              "title": "Intermediate: Gorsa Barsiisaa Beekamaa (Guutuu)",
+              "text": "🟡 Yaada Intermediate:\nAkka barsiisaa beekaatti na qajeelchi.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Wanta nan baradhu gabaabsaan ibsi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Mata-duree gara tarkaanfii sirnaawaaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi sirnaawaa kenni.\n6. Afaan salphaa fayyadami; yaadota teekinikaa barbaachisan dabaluu.\n7. Fakkeenya jireenya guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo qorachuuf MCQ 5 kenni.\n10. Gaaffii gabaabaa ibsa ofii kootiin deebisu tokko naa dhiheessi.\n11. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" barreessuun itti fufa."
+            },
+            "mas1": {
+              "title": "Shaakala Socratic",
+              "text": "Akka barsiisaa na gaafadhu; [topic] irratti gaaffilee yaaddessaa dandeettii dabalaa; gorsa yoo gaafadhe qofa kenni; yaada kootirratti yaada kenni."
+            },
+            "mas2": {
+              "title": "Gaaffilee Fakkii Qormaataa + Rubrikii",
+              "text": "[course] irratti gaaffilee 12 qopheessi: MCQ 6, deebii gabaabaa 4, case study 2; rakkinaa fi rubrikii madaallii dabaluu."
+            },
+            "mas3": {
+              "title": "Mastery: Gorsaa Sadarkaa Pirofeezer (Guutuu)",
+              "text": "🔴 Yaada Sadarkaa Ol‑aanaa / Mastery:\nAkka pirofeezerii fi gorsaa beekaatti naa tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Waa'ee mata-duree fi waanan sirnaan beekuu qabu gabaabsaan agarsiisi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Gara kutaa/koorsii sadarkaa ol‑aanaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa gadii fageenyaan garuu ifaa kenni.\n6. Ibsa teekinikaa fi salphaa waliin dhiheessi.\n7. Fakkeenya jireenya addunyaa fi guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo gadi fageenyaaf MCQ 5 rakkisaa kenni.\n10. Yaada hubannoo gadi fageenya qoru gaaffii yaad-rimee 1 dhiheessi.\n11. Dogoggora barattoonni yeroo hedduu raaw'atan tuqi.\n12. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii hunda booda natti hafu.\n\"Next\" barreessuun itti fufa."
+            }
+          }
+        }
       },
       "mindMap": {
         "title": "Uumaa Kaartaa Sammuu",
@@ -1377,7 +1472,52 @@ const resources = {
         "errorDescription": "AI የጥናት ረዳት መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
         "openExternal": "በውጫዊ አሳሽ ውስጥ ክፈት",
         "note": "ማስታወሻ: እነዚህ መሳሪያዎች በአሳሽዎ ውስጥ ይከፈታሉ። NotebookLMን ለመጠቀም በGoogle መለያዎ መግባት ሊያስፈልግዎ ይችላል።",
-        "launch": "ጀምር"
+        "launch": "ጀምር",
+        "promptLibrary": {
+          "title": "የፕሮምፕት መፍለጊያ",
+          "subtitle": "ለጀማሪ፣ ለመካከለኛ እና ለማስተር ደረጃ ዝግጁ ፕሮምፕቶችን ይቅዱ እና ይቀይሩ።",
+          "beginner": "ጀማሪ",
+          "intermediate": "መካከለኛ",
+          "mastery": "ማስተር",
+          "prompts": {
+            "beg1": {
+              "title": "በቀላሉ አብራራ",
+              "text": "[topic] በቀላሉ አብራራ፣ ከእውቂያ ምሳሌ፣ 3 ዋና ነጥቦች እና 3 ጥያቄ ከመልሶች ጋር ያቀርቡ።"
+            },
+            "beg2": {
+              "title": "7‑ቀን የስልጠና እቅድ",
+              "text": "ለ[subject] 7 ቀናት የስልጠና እቅድ ይፍጠሩ። በየቀኑ: 1 ግብ፣ 2 ምንጮች፣ 20 ደቂቃ ልምድ ሥራ እና አጭር የመደመር ጥያቄ።"
+            },
+            "beg3": {
+              "title": "ጀማሪ: በእርምጃ በእርምጃ መምሪያ (ሙሉ ፕሮምፕት)",
+              "text": "🟢 ጀማሪ ደረጃ ፕሮምፕት:\nእንደ ተማሪ ጓደኛ እና ረዳት መምህር ይሆኑ።\n\nመጀመሪያ ይጠይቁኝ፡ \"በምን ቋንቋ ልትማር ትፈልጋለህ?\"\nመልሴን ጠብቅ እና ትምህርቱን በዚያ ቋንቋ ቀጥል።\n\nከዚያ በኋላ ርዕስ ወይም ለማማር የምፈልገውን ፋይል ስለምንቀርብ ጠይቀኝ፡\n[ተጠቃሚው ርዕስ ይግቡ ወይም ፋይል ይስቀሉ]\n\nየማስተማር መመሪያዎች:\n1. ምን እንደምማር አጭር እና ቀላል ማጠቃለያ ስጠኝ።\n2. ከማጠቃለያው በኋላ \"Next\" እንዲጻፍ አስተውለኝ እና ደረጃ 1 ጀምር።\n3. ርዕሱን ወደ ትንሽ ንዑስ ርዕሶች ክፈል።\n4. በደረጃ 1 ብቻ ጀምር።\n5. ግልጽ እና ቀላል ማብራሪያ ስጥ።\n6. ቀላል ቃላት እና የዕለታዊ ሕይወት ምሳሌዎች ተጠቀም።\n7. ለዚያ ደረጃ ቢያንስ 3 ምሳሌዎች ስጥ።\n8. ግንዛቤ ለመፈተን 5 የMCQ ጥያቄዎች ስጥ።\n9. ሀሳቡን በራሴ ቃላት እንድለምን አጭር ጥያቄ ጠይቀኝ።\n10. ደረጃውን በአጭር ማጠቃለያ ጨርስ።\n\nደረጃው ከተጠናቀቀ በኋላ ቆም እና ጠብቀኝ።\n\"Next\" ሲል ሲጻፍ እቀጥላለሁ።"
+            },
+            "int1": {
+              "title": "በእርምጃ የተከተለ ልምድ ጥያቄዎች",
+              "text": "በ[topic] ላይ 5 ልምድ ጥያቄዎች ከቀላል→ከባድ ይስጡ። እያንዳንዱን ከሞክርሁ በኋላ በእርምጃ የተከተለ መልስ እና የተለመዱ ስህተቶች አሳዩ።"
+            },
+            "int2": {
+              "title": "አጭር ማጠቃለያ + ግንዛቤ ማረጋገጥ",
+              "text": "ይህን ጽሑፍ በነጥብ-መደብ አጭር ያድርጉ፣ ከዚያ 10 የተለያዩ ጥያቄዎች (MCQ፣ አጭር መልስ) ጠይቁ እና ከማብራሪያ ጋር መልስ ቁልፍ ይስጡ።"
+            },
+            "int3": {
+              "title": "መካከለኛ: የባለሙያ መመሪያ (ሙሉ ፕሮምፕት)",
+              "text": "🟡 መካከለኛ ደረጃ ፕሮምፕት:\nእንደ ባለሙያ መምህር ይመሩ።\n\nመጀመሪያ ይጠይቁኝ፡ \"በምን ቋንቋ ልትማር ትፈልጋለህ?\"\nመልሴን ጠብቅ እና ትምህርቱን በዚያ ቋንቋ ቀጥል።\n\nከዚያ በኋላ ርዕስ ወይም ለማማር የምፈልገውን ፋይል ጠይቀኝ:\n[ተጠቃሚው ርዕስ ይግቡ ወይም ፋይል ይስቀሉ]\n\nመመሪያዎች:\n1. ምን እንደምማር አጭር እይታ ስጥ።\n2. \"Next\" እንዲጻፍ አስተውለኝ እና ደረጃ 1 ጀምር።\n3. ርዕሱን ወደ ሎጂካዊ እርምጃዎች ክፈል።\n4. በደረጃ 1 ብቻ ጀምር።\n5. ግልጽ እና የተዋቀረ ማብራሪያ ስጥ።\n6. ቀላል ቋንቋ ተጠቀም ግን አስፈላጊ ቴክኒክ ፅንሰ-ሀሳቦች አካትት።\n7. የዕለታዊ ሕይወት ምሳሌዎች ስጥ።\n8. ቢያንስ 3 ምሳሌዎች ስጥ።\n9. ግንዛቤን ለመፈተን 5 MCQ ስጥ።\n10. አጭር የማብራሪያ ጥያቄ ጠይቀኝ።\n11. እርምጃውን በአጭር ማጠቃለያ ጨርስ።\n\nእርምጃው ከተጠናቀቀ በኋላ ቆም እና ጠብቀኝ።\n\"Next\" ሲል ሲጻፍ እቀጥላለሁ።"
+            },
+            "mas1": {
+              "title": "Socratic ልምድ",
+              "text": "እንደ መምህር ይሆኑ። በ[topic] ላይ ጥርጣሬ ያለ ጥያቄ ይጠይቁ፣ ውስብስብነትን ያስጨምሩ። ምክር ሲጠይቅ ብቻ ይስጡ። በአስተሳሰብ ላይ ግብረመልስ ይስጡ።"
+            },
+            "mas2": {
+              "title": "የፈተና ቅርጽ ጥያቄዎች ከረብሪክ ጋር",
+              "text": "ለ[course] የተቀላቀሉ 12 ጥያቄዎች ይፍጠሩ፡ MCQ 6፣ አጭር መልስ 4፣ case study 2። የችግኝነት መለያዎችን እና የማረጋገጫ መለኪያ (rubric) ካብ ያካትቱ።"
+            },
+            "mas3": {
+              "title": "ማስተር: የፕሮፌሰር ደረጃ መንገድ መምሪያ (ሙሉ ፕሮምፕት)",
+              "text": "🔴 የላቀ / ማስተር ደረጃ ፕሮምፕት:\nእንደ ፕሮፌሰር እና መነጋገር ረዳት ይሆኑ።\n\nመጀመሪያ ይጠይቁኝ፡ \"በምን ቋንቋ ልትማር ትፈልጋለህ?\"\nመልሴን ጠብቅ እና ትምህርቱን በዚያ ቋንቋ ቀጥል።\n\nከዚያ በኋላ ርዕስ ወይም ለማማር የምፈልገውን ፋይል ጠይቀኝ:\n[ተጠቃሚው ርዕስ ይግቡ ወይም ፋይል ይስቀሉ]\n\nመመሪያዎች:\n1. ርዕሱን እና ምን እንደምማር አጭር እይታ ስጥ።\n2. \"Next\" እንዲጻፍ አስተውለኝ እና ደረጃ 1 ጀምር።\n3. ርዕሱን ወደ የላቀ ሞጁሎች ወይም ክፍሎች ክፈል።\n4. በደረጃ 1 ብቻ ጀምር።\n5. ጥልቅ ነገር ግን ግልጽ ማብራሪያ ስጥ።\n6. ቴክኒካዊ እና ቀላል ማብራሪያ አቀርብ።\n7. የዕለታዊ ሕይወት እና ከእውነተኛ ዓለም ምሳሌዎች ስጥ።\n8. ቢያንስ 3 ምሳሌዎች ስጥ።\n9. 5 ከባድ MCQ ስጥ።\n10. የግንዛቤ ጥርጣሬ ጥያቄ 1 አቅርብ።\n11. ተማሪዎች የሚያደርጉ የተለመዱ ስህተቶችን አስታውቅ።\n12. እርምጃውን በአጭር ማጠቃለያ ጨርስ።\n\nእያንዳንዱ እርምጃ ከተጠናቀቀ በኋላ ቆም እና ጠብቀኝ።\n\"Next\" ሲል ሲጻፍ እቀጥላለሁ።"
+            }
+          }
+        }
       },
       "mindMap": {
         "title": "የአእምሮ ካርታ ጀነሬተር",

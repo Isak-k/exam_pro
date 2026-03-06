@@ -68,6 +68,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     { href: "/dashboard/students", label: t("dashboard.menu.students"), icon: Users },
     { href: "/dashboard/feedback", label: "Feedback", icon: MessageSquare },
     { href: "/dashboard/analytics", label: t("dashboard.menu.analytics"), icon: BarChart3 },
+    { href: "/dashboard/ai-assistant", label: t("aiAssistant.title", "AI Study Assistant"), icon: Brain },
     { href: "/dashboard/leaderboard-admin", label: "Leaderboard Admin", icon: Trophy },
     { href: "/dashboard/departments", label: t("dashboard.menu.departments"), icon: Building },
     ...(isSuperAdmin ? [{ href: "/dashboard/super-admin", label: "Super Admin", icon: Shield }] : []),
