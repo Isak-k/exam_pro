@@ -942,58 +942,90 @@ const resources = {
       },
       "aiAssistant": {
         "title": "Gargaaraa Barnoota AI",
-        "subtitle": "Meeshaa barnoota AI kee filadhu",
+        "subtitle": "Meeshaalee AI fi yaadota qophaa'an barnoota bu'a qabeessaaf",
         "description": "Barnoota keetiif gargaarsa AI argadhu Google NotebookLM fayyadamuun",
-        "notebookDescription": "Barnoota keetiif gargaarsa AI argadhu. Galmee ol kaa'i, gaaffii gaafadhu, fi deebii battalumatti argadhu.",
+        "notebookDescription": "Galmee ol kaa'i, gaaffii gaafadhu, fi deebii battalumatti argadhu.",
         "loading": "Gargaaraa Barnoota AI fe'aa jira...",
         "error": "Gargaaraa Barnoota AI fe'uu hin dandeenye",
         "errorDescription": "Gargaaraan Barnoota AI fe'amuu hin dandeenye. Maaloo irra deebi'ii yaali.",
         "openExternal": "Geessituu Alaa Keessatti Bani",
         "note": "Yaadannoo: Meeshaaleen kun geessituu kee keessatti banamuu. NotebookLM fayyadamuuf akkaawuntii Google keetiin seenuu si barbaachisuu danda'a.",
         "launch": "Jalqabi",
-        "promptLibrary": {
-          "title": "Maqaa yaada (Prompt) Kuusaa",
-          "subtitle": "Beekamtii sadarkaa Beginner, Intermediate fi Mastery irratti qopheessine kan asii irraa guurrattu.",
-          "beginner": "Beginner",
-          "intermediate": "Intermediate",
-          "mastery": "Mastery",
-          "prompts": {
-            "beg1": {
-              "title": "Salphaa Ta'ee Naaf Ibsi",
-              "text": "[topic] hiika salphaan ibsi; fakkeenya jireenya guyyaa guyyaa, irra-caalaa 3 furmaata, fi gaaffilee too'annoo 3 deebii waliin kenni."
-            },
-            "beg2": {
-              "title": "Sagantaa Barnootaa 7‑Guyyaa",
-              "text": "Barnoota [subject]af sagantaa guyyoota 7 qophiisi. Guyyaa hunda: kaayyoo 1, madda 2, hojii 20‑daqiiqaa, fi gaaffii xiqqaa irra-ddeebi'i."
-            },
-            "beg3": {
-              "title": "Beginner: Tajaajila Tarkaanfii‑Tarkaanfiin (Guutuu)",
-              "text": "🟢 Yaada Beginner:\nAkka barsiisaaafi hiriyyaa barnootaa na tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Dursa gabaabbinaan waanan baradhu ibsi.\n2. Sana booda \"Next\" barreessi jedhee akka Tarkaanfii 1 jalqabu natti himi.\n3. Mata-duree gara tarkaanfii xiqqootti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi salphaa kenni.\n6. Jechoota salphaa fi fakkeenya jireenya guyyaa guyyaa fayyadami.\n7. Tarkaanfii sanaaf yoo xiqqaate fakkeenya 3 kenni.\n8. Hubannoo qorachuuf MCQ 5 kenni.\n9. Yaada sana akkaan jechoota kiyyaatiin ibsuuf gaaffii gabaabaa tokko na gaafadhu.\n10. Tarkaanfii sana xumuruun gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" yoo barreesse itti fufa.\n\nAkka hiriyyaa deeggartuu tokkootti na barsiisi; barachuun salphaa fi gammachiisaa haa ta'u."
-            },
-            "int1": {
-              "title": "Meeshaalee Shaakalaa Itti‑aananii",
-              "text": "[topic] irratti boriisa 5 salphaa→hadi keessatti kenni; erga nan yaale booda furmaata tarkaanfaan fi dogoggora wal‑fakkaataan agarsiisi."
-            },
-            "int2": {
-              "title": "Walmadaalaa + Hubannoo Qoruu",
-              "text": "Barruu kana maddi‑maddi gabaabsi; achumaan gaaffilee garaagaraa 10 (MCQ, deebii gabaabaa) gaafadhu; furmaata waliin ibsa kenni."
-            },
-            "int3": {
-              "title": "Intermediate: Gorsa Barsiisaa Beekamaa (Guutuu)",
-              "text": "🟡 Yaada Intermediate:\nAkka barsiisaa beekaatti na qajeelchi.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Wanta nan baradhu gabaabsaan ibsi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Mata-duree gara tarkaanfii sirnaawaaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi sirnaawaa kenni.\n6. Afaan salphaa fayyadami; yaadota teekinikaa barbaachisan dabaluu.\n7. Fakkeenya jireenya guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo qorachuuf MCQ 5 kenni.\n10. Gaaffii gabaabaa ibsa ofii kootiin deebisu tokko naa dhiheessi.\n11. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" barreessuun itti fufa."
-            },
-            "mas1": {
-              "title": "Shaakala Socratic",
-              "text": "Akka barsiisaa na gaafadhu; [topic] irratti gaaffilee yaaddessaa dandeettii dabalaa; gorsa yoo gaafadhe qofa kenni; yaada kootirratti yaada kenni."
-            },
-            "mas2": {
-              "title": "Gaaffilee Fakkii Qormaataa + Rubrikii",
-              "text": "[course] irratti gaaffilee 12 qopheessi: MCQ 6, deebii gabaabaa 4, case study 2; rakkinaa fi rubrikii madaallii dabaluu."
-            },
-            "mas3": {
-              "title": "Mastery: Gorsaa Sadarkaa Pirofeezer (Guutuu)",
-              "text": "🔴 Yaada Sadarkaa Ol‑aanaa / Mastery:\nAkka pirofeezerii fi gorsaa beekaatti naa tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Waa'ee mata-duree fi waanan sirnaan beekuu qabu gabaabsaan agarsiisi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Gara kutaa/koorsii sadarkaa ol‑aanaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa gadii fageenyaan garuu ifaa kenni.\n6. Ibsa teekinikaa fi salphaa waliin dhiheessi.\n7. Fakkeenya jireenya addunyaa fi guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo gadi fageenyaaf MCQ 5 rakkisaa kenni.\n10. Yaada hubannoo gadi fageenya qoru gaaffii yaad-rimee 1 dhiheessi.\n11. Dogoggora barattoonni yeroo hedduu raaw'atan tuqi.\n12. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii hunda booda natti hafu.\n\"Next\" barreessuun itti fufa."
-            }
+        "prompts": {
+          "b1": {
+            "title": "Barsiisaa Michuu fi Hiriyyaa Barnootaa",
+            "description": "Barnoota tarkaanfii-tarkaanfiin fakkeenya fi gaaffilee shaakalaa waliin",
+            "prompt": "Akka barsiisaa michuu fi hiriyyaa barnootaa na tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Dursa gabaabbinaan waanan baradhu ibsi.\n2. Sana booda \"Next\" barreessi jedhee akka Tarkaanfii 1 jalqabu natti himi.\n3. Mata-duree gara tarkaanfii xiqqootti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi salphaa kenni.\n6. Jechoota salphaa fi fakkeenya jireenya guyyaa guyyaa fayyadami.\n7. Tarkaanfii sanaaf yoo xiqqaate fakkeenya 3 kenni.\n8. Hubannoo qorachuuf MCQ 5 kenni.\n9. Yaada sana akkaan jechoota kiyyaatiin ibsuuf gaaffii gabaabaa tokko na gaafadhu.\n10. Tarkaanfii sana xumuruun gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" yoo barreesse itti fufa.\n\nAkka hiriyyaa deeggartuu tokkootti na barsiisi; barachuun salphaa fi gammachiisaa haa ta'u."
+          },
+          "b2": {
+            "title": "Akka Daa'ima Umrii 5tti Naaf Ibsi",
+            "description": "Mata-duree walxaxaa ta'eef ibsa salphaa argadhu",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin akkan sitti ibsu barbaadda?\"\nDeebii kiyya eegi; ibsa sana afaan sanaan kenni.\n\nSana booda [TOPIC] akka daa'ima umrii 5tti naaf ibsi. Jechoota salphaa fi fakkeenyoota fayyadami."
+          },
+          "b3": {
+            "title": "Qajeelfama Barnootaa Uumuu",
+            "description": "Dhimma kamiifuu qajeelfama barnootaa uumi",
+            "prompt": "Dursa na gaafadhu: \"Qajeelfama barnootaa afaan kamiin barbaadda?\"\nDeebii kiyya eegi; qajeelfama sana afaan sanaan uumi.\n\nQajeelfama barnootaa guutuu [SUBJECT/TOPIC]f uumi. Yaadota ijoo, hiikota, fi gaaffilee shaakalaa dabaluu."
+          },
+          "b4": {
+            "title": "Gargaaraa Hojii Manaa",
+            "description": "Rakkoo hojii manaa hubachuuf gargaarsa argadhu",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin akkan si gargaaru barbaadda?\"\nDeebii kiyya eegi; gargaarsa sana afaan sanaan kenni.\n\nRakkoo hojii manaa kana hubachuuf na gargaari: [RAKKOO MAXXANSI]. Yaada sana ibsiitii furmaata tarkaanfii-tarkaanfiin na qajeelchi."
+          },
+          "b5": {
+            "title": "Ijaaraa Jechootaa",
+            "description": "Jechootahaaraa fi itti fayyadama isaanii baradhu",
+            "prompt": "Dursa na gaafadhu: \"Jechootahaaraa afaan kamiin barachuu barbaadda?\"\nDeebii kiyya eegi; afaan sanaan barsiisi.\n\n[SUBJECT] waliin walqabatan jechootahaaraa barbaachisoo 10 na barsiisi. Jecha hundaaf: hiika, hima fakkeenya, fi mala yaadannoo kenni."
+          },
+          "i1": {
+            "title": "Barsiisaa Beekamaa fi Qajeelchaa",
+            "description": "Barnoota sirna qabu yaadota teekinikaa fi shaakalaa waliin",
+            "prompt": "Akka barsiisaa beekamaa fi qajeelchaa na tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Wanta nan baradhu gabaabsaan ibsi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Mata-duree gara tarkaanfii sirnaawaaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa ifaa fi sirnaawaa kenni.\n6. Afaan salphaa fayyadami; yaadota teekinikaa barbaachisan dabaluu.\n7. Fakkeenya jireenya guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo qorachuuf MCQ 5 kenni.\n10. Gaaffii gabaabaa ibsa ofii kootiin deebisu tokko naa dhiheessi.\n11. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii xumuruun booda natti hafu.\n\"Next\" barreessuun itti fufa."
+          },
+          "i2": {
+            "title": "Uumaa Karoora Barreeffamaa",
+            "description": "Karoora barreeffamaa sirna qabu uumi",
+            "prompt": "Dursa na gaafadhu: \"Karoora barreeffamaa afaan kamiin barbaadda?\"\nDeebii kiyya eegi; karoora sana afaan sanaan uumi.\n\nKaroora barreeffamaa bal'aa mata-duree: [TOPIC]f uumi. Dabaluu: ibsa yaada ijoo, qabxiilee ijoo 3-5 falmii deeggarsaa waliin, fi xumura."
+          },
+          "i3": {
+            "title": "Walqunnamsiisaa Yaadaa",
+            "description": "Yaadota walqabatan walitti hidhuu",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin akkan sitti ibsu barbaadda?\"\nDeebii kiyya eegi; afaan sanaan ibsi.\n\nAkkamitti [YAADA A] [YAADA B] waliin [SUBJECT] keessatti akka walqabatu ibsi. Walqunnamtii fi fakkeenyoota addunyaa dhugaa agarsiisi."
+          },
+          "i4": {
+            "title": "Uumaa Qormaata Shaakalaa",
+            "description": "Gaaffilee shaakalaa uumi",
+            "prompt": "Dursa na gaafadhu: \"Qormaata shaakalaa afaan kamiin barbaadda?\"\nDeebii kiyya eegi; qormaata sana afaan sanaan uumi.\n\nQormaata shaakalaa [SUBJECT/TOPIC]f gaaffilee 10 waliin uumi. Dabaluu: filannoo dachaa 5, deebii gabaabaa 3, fi gaaffilee barreeffamaa 2. Furmaata kenni."
+          },
+          "i5": {
+            "title": "Gargaaraa Qorannoo",
+            "description": "Mata-duree qorannoof gargaarsa argadhu",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin akkan si gargaaru barbaadda?\"\nDeebii kiyya eegi; gargaarsa sana afaan sanaan kenni.\n\n[TOPIC] qorachaa jira. Kenni: 1) Naannolee ijoo qorachuu qaban, 2) Gaaffilee barbaachisoo deebisuu qaban, 3) Maddoota yaada kennan, 4) Akkamitti argannoo koo akkan qindeessu."
+          },
+          "a1": {
+            "title": "Pirofeezera Beekamaa fi Gorsaa",
+            "description": "Barnoota sadarkaa ol-aanaa yaadota gadi fageenya qaban waliin",
+            "prompt": "Akka pirofeezera beekamaa fi gorsaa na tajaajili.\n\nDursa na gaafadhu: \"Afaan kamitti barachuu barbaadda?\"\nDeebii kiyya eegi; barnoota sana afaan sanatti itti fufi.\n\nSana booda mata-duree ykn faayila barachuufan barbaadu naa gaafadhu:\n[Barataa mata-duree galcha ykn faayila ol-kaasa]\n\nQajeelfama barsiisuu:\n1. Waa'ee mata-duree fi waanan sirnaan beekuu qabu gabaabsaan agarsiisi.\n2. \"Next\" akka barreessu natti himi; Tarkaanfii 1 jalqabi.\n3. Gara kutaa/koorsii sadarkaa ol-aanaatti qoodi.\n4. Tarkaanfii 1 qofaan jalqabi.\n5. Ibsa gadii fageenyaan garuu ifaa kenni.\n6. Ibsa teekinikaa fi salphaa waliin dhiheessi.\n7. Fakkeenya jireenya addunyaa fi guyyaa guyyaa kenni.\n8. Yoo xiqqaate fakkeenya 3 kenni.\n9. Hubannoo gadi fageenyaaf MCQ 5 rakkisaa kenni.\n10. Yaada hubannoo gadi fageenya qoru gaaffii yaad-rimee 1 dhiheessi.\n11. Dogoggora barattoonni yeroo hedduu raaw'atan tuqi.\n12. Xumura irratti gabaabsaan sirreessi.\n\nTarkaanfii hunda booda natti hafu.\n\"Next\" barreessuun itti fufa."
+          },
+          "a2": {
+            "title": "Qajeelfama Xiinxala Qeeqaa",
+            "description": "Barreeffamaa fi falmii qeeqaan xiinxali",
+            "prompt": "Dursa na gaafadhu: \"Xiinxala afaan kamiin barbaadda?\"\nDeebii kiyya eegi; xiinxala sana afaan sanaan kenni.\n\n[BARREEFFAMA/FALMII] qeeqaan xiinxali. Madaali: 1) Yaada ijoo fi falmii deeggarsaa, 2) Ciminaa fi dadhabina, 3) Dogoggora loojikii, 4) Qulqullina ragaa, 5) Ilaalcha biroo, 6) Bu'aa fi xumura."
+          },
+          "a3": {
+            "title": "Barsiisaa Socratic",
+            "description": "Gaaffii qajeelchuun baradhu",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin barachuu barbaadda?\"\nDeebii kiyya eegi; afaan sanaan barnoota itti fufi.\n\nAkka barsiisaa Socratic [SUBJECT/TOPIC]f na tajaajili. Deebii kallattiin kennuu dhiisii, gaaffilee yaad-rimee ta'aniin akkan ofii kiyyaan argadhuuf na qajeelchi. Yaada koo qoradhuu fi qeeqaan akkan yaadu na gargaari."
+          },
+          "a4": {
+            "title": "Guddina Yaada Ijoo",
+            "description": "Ibsa yaada ijoo cimaa guddisi",
+            "prompt": "Dursa na gaafadhu: \"Afaan kamiin hojjechuu barbaadda?\"\nDeebii kiyya eegi; afaan sanaan na gargaari.\n\nYaada ijoo cimaa barreeffama kiyyaa [TOPIC] irratti akkan guddisu na gargaari. Na qajeelchi: 1) Xiyyeeffannoo dhiphisuu, 2) Falmii ifaa bocuu, 3) Falmachuu akka danda'u mirkaneessuu, 4) Addaa fi deeggarsuu akka danda'u taasisuu, 5) Afaan fooyya'uu."
+          },
+          "admin1": {
+            "title": "Uumaa MCQ (Bulchitootaaf Qofa)",
+            "description": "Gaaffilee qormaataa deebii fi ibsa waliin uumi",
+            "prompt": "Akka uumaa gaaffii qormaataa beekamaa na tajaajili.\n\nDursa na gaafadhu: \"Gaaffilee afaan kamiin barbaadda?\"\nDeebii kiyya eegi; gaaffilee hunda afaan sanaan uumi.\n\nGaaffilee filannoo dachaa qormaataaf uumuu barbaada.\n\nMata-duree:\n[Mata-duree asitti galchi]\n\nSadarkaa rakkina:\n[Salphaa / Giddu-galeessa / Rakkisaa]\n\nLakkoofsa gaaffilee:\n[Lakkoofsa galchi]\n\nQajeelfama:\n1. Gaaffilee qulqullina ol-aanaa mata-duree irratti hundaa'an uumi.\n2. Gaaffiin hundi filannoo 4 (A, B, C, D) qabaachuu qaba.\n3. Deebii sirrii * fayyadamuun mallattoo godhi.\n4. Gaaffii hunda booda ibsa gabaabaa maaliif deebiin sun sirrii ta'e kenni.\n5. Afaan salphaa fi ifaa afaan filatame waliin fayyadami.\n6. Gaaffilee irra-deddeebi'uu irraa of qusadhu.\n7. Gaaffilee barattootaaf ta'an uumi.\n\nBifa kanaan baasii qindeessi:\n\n1. Gaaffiin asitti?\nA. Filannoo\nB. Filannoo\nC. Deebii sirrii *\nD. Filannoo\n\nIbsa: Ibsa gabaabaa maaliif deebiin sun sirrii ta'e barreessi."
           }
         }
       },
